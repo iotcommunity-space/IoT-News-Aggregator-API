@@ -21,8 +21,6 @@ A comprehensive REST API that aggregates IoT news from multiple RSS feeds with a
 
 ```
 IOT-NEWS/
-├── data/                          # Auto-generated data storage
-│   └── articles.json              # In-memory persistence file
 ├── models/                        # Database models (MongoDB version)
 │   └── Article.js                 # Mongoose article schema with validation
 ├── routes/                        # API route handlers
@@ -35,14 +33,11 @@ IOT-NEWS/
 │   ├── databaseService.js        # MongoDB database service
 │   └── scheduler.js              # RSS fetching scheduler with cron
 ├── .env                          # Environment configuration
-├── .env.old                      # Backup environment file
 ├── .gitignore                    # Git ignore rules
 ├── Ins.md                        # Installation instructions
 ├── package.json                  # Dependencies and npm scripts
 ├── package-lock.json            # Dependency lock file
 ├── server.js                     # Main application entry point
-├── server.js.old                # Backup server file
-├── test.json                     # Test configuration
 └── README.md                     # This documentation
 ```
 
