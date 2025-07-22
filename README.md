@@ -874,5 +874,5 @@ SOFTWARE.
 
 ### **⭐ Star this project on GitHub to support IoT innovation!**
 
-[![GitHub stars](https://img.shields.io/github/stars/iotcommunity-space/IoT-News-Aggregator](https://img.shields.io/github/forks Updated: July 22, 2025 -  Version 2.0.0*
+
 
