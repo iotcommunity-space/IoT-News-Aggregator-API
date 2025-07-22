@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const RSSParser = require('./rssParser');
 const Article = require('../models/Article');
 const DuplicateDetector = require('./duplicateDetector');
+const crypto = require('crypto');
 
 class RSSScheduler {
   constructor() {
@@ -17,7 +18,26 @@ class RSSScheduler {
     };
   }
 
-  // Save articles to MongoDB with duplicate detection
+  // Generate content hash for comparison
+  generateContentHash(article) {
+    const content = `${article.title}${article.excerpt}${article.author}`
+      .toLowerCase()
+      .replace(/[^\w\s]/g, '')
+      .replace(/\s+/g, ' ')
+      .trim();
+    
+    return crypto.createHash('md5').update(content).digest('hex');
+  }
+
+  // Generate unique ID
+  generateId(article) {
+    return crypto.createHash('sha256')
+      .update(article.url + article.title)
+      .digest('hex')
+      .substring(0, 16);
+  }
+
+  // Save articles to MongoDB with proper field generation
   async saveArticles(articles) {
     if (!articles || articles.length === 0) {
       return { saved: 0, updated: 0, skipped: 0 };
@@ -32,11 +52,22 @@ class RSSScheduler {
 
     for (const article of processedResult.allArticles) {
       try {
+        // Generate required fields
+        const contentHash = this.generateContentHash(article);
+        const id = this.generateId(article);
+
+        // Add required fields to article
+        const articleWithRequiredFields = {
+          ...article,
+          id: id,
+          contentHash: contentHash
+        };
+
         // Check if article already exists
         const existingArticle = await Article.findOne({ 
           $or: [
             { url: article.url },
-            { contentHash: this.generateContentHash(article) }
+            { contentHash: contentHash }
           ]
         });
 
@@ -44,7 +75,7 @@ class RSSScheduler {
           // Update if content has changed
           if (new Date() - existingArticle.updatedAt > 60000) { // 1 minute threshold
             await Article.findByIdAndUpdate(existingArticle._id, {
-              ...article,
+              ...articleWithRequiredFields,
               updatedAt: new Date()
             });
             updated++;
@@ -52,8 +83,8 @@ class RSSScheduler {
             skipped++;
           }
         } else {
-          // Create new article
-          const newArticle = new Article(article);
+          // Create new article with all required fields
+          const newArticle = new Article(articleWithRequiredFields);
           await newArticle.save();
           saved++;
         }
@@ -68,21 +99,9 @@ class RSSScheduler {
       }
     }
 
-    console.log(`MongoDB operation: ${saved} saved, ${updated} updated, ${skipped} skipped`);
+    console.log(`📦 MongoDB operation: ${saved} saved, ${updated} updated, ${skipped} skipped`);
     
     return { saved, updated, skipped, totalProcessed: articles.length };
-  }
-
-  // Generate content hash for comparison
-  generateContentHash(article) {
-    const crypto = require('crypto');
-    const content = `${article.title}${article.excerpt}${article.author}`
-      .toLowerCase()
-      .replace(/[^\w\s]/g, '')
-      .replace(/\s+/g, ' ')
-      .trim();
-    
-    return crypto.createHash('md5').update(content).digest('hex');
   }
 
   // Fetch and process all RSS feeds
@@ -131,7 +150,7 @@ class RSSScheduler {
 
   // Start the scheduler
   start() {
-    const cronPattern = process.env.RSS_FETCH_INTERVAL || '*/15 * * * *'; // Every 15 minutes
+    const cronPattern = process.env.RSS_FETCH_INTERVAL || '*/15 * * * *';
     
     console.log(`⏰ Starting RSS scheduler with pattern: ${cronPattern}`);
     
