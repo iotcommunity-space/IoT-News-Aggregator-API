@@ -369,3 +369,26 @@ Your deployment is successful when:
 **You now have a production-ready IoT News API with MongoDB running entirely in Docker containers!** 🚀
 
 **No manual MongoDB installation required** - Docker handles everything automatically.
+
+# Monitor the Startup
+
+# Watch the logs
+docker-compose logs -f
+
+# In another terminal, check status
+docker-compose ps
+
+# Diagnose Clean Up and Restart
+
+# Remove old containers and volumes
+docker-compose down -v
+
+# Remove old images
+docker rmi mongo:7.0 mongo-express:1.0.0-alpha
+
+# Clean up
+docker system prune -f
+
+# Restart with new configuration
+docker-compose up --build -d
+
