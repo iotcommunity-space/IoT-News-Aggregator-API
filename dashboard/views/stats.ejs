@@ -6,11 +6,11 @@
     <title>Statistics - IoT News Dashboard by IoTCommunity.Space</title>
     <meta name="description" content="Analytics and statistics for IoT news aggregation platform">
     <meta name="author" content="IoTCommunity.Space">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    
+
     <link rel="icon" type="image/png" href="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
 </head>
 <body>
@@ -18,18 +18,18 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                     alt="IoTCommunity.Space Logo" 
-                     height="32" 
+                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                     alt="IoTCommunity.Space Logo"
+                     height="32"
                      class="me-2 brand-logo"
                      onerror="this.style.display='none';">
                 <span class="fw-bold">IoT News Dashboard</span>
             </a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -43,7 +43,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/api/v1/articles" target="_blank">
+                        <a class="nav-link" href="<%= apiBaseUrl %>/api/v1/articles" target="_blank">
                             <i class="fas fa-code me-1"></i>API
                         </a>
                     </li>
@@ -62,9 +62,9 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                         alt="IoTCommunity.Space Logo" 
-                         height="48" 
+                    <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                         alt="IoTCommunity.Space Logo"
+                         height="48"
                          class="mb-3"
                          onerror="this.style.display='none';">
                     <h1 class="display-4 mb-3">
@@ -99,7 +99,7 @@
                     <i class="fas fa-tachometer-alt me-2"></i>Key Performance Indicators
                 </h2>
             </div>
-            
+
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card">
                     <div class="stats-card-icon bg-primary">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card">
                     <div class="stats-card-icon bg-success">
@@ -131,7 +131,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card">
                     <div class="stats-card-icon bg-info">
@@ -147,7 +147,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-3 col-md-6 mb-4">
                 <div class="stats-card">
                     <div class="stats-card-icon bg-warning">
@@ -164,7 +164,7 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
             <!-- Sources Analysis -->
             <div class="col-lg-6 mb-4">
@@ -178,9 +178,9 @@
                     <div class="card-body">
                         <% if (sources.length > 0) { %>
                             <div class="sources-chart">
-                                <% 
+                                <%
                                 const maxCount = Math.max(...sources.map(s => s.count));
-                                sources.forEach((source, index) => { 
+                                sources.forEach((source, index) => {
                                     const percentage = (source.count / maxCount) * 100;
                                     const colors = ['primary', 'success', 'info', 'warning', 'danger', 'secondary'];
                                     const color = colors[index % colors.length];
@@ -202,9 +202,9 @@
                                             </div>
                                         </div>
                                         <div class="progress" style="height: 8px;">
-                                            <div class="progress-bar bg-<%= color %>" 
+                                            <div class="progress-bar bg-<%= color %>"
                                                  style="width: <%= percentage %>%;"
-                                                 data-bs-toggle="tooltip" 
+                                                 data-bs-toggle="tooltip"
                                                  title="<%= ((source.count / totalArticles) * 100).toFixed(1) %>% of total articles">
                                             </div>
                                         </div>
@@ -223,7 +223,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Top Categories -->
             <div class="col-lg-6 mb-4">
                 <div class="card h-100 shadow-sm">
@@ -236,7 +236,7 @@
                     <div class="card-body">
                         <% if (categories.length > 0) { %>
                             <div class="categories-list">
-                                <% categories.forEach((category, index) => { 
+                                <% categories.forEach((category, index) => {
                                     const rank = index + 1;
                                     const badgeClass = index < 3 ? 'primary' : index < 7 ? 'success' : 'secondary';
                                 %>
@@ -281,7 +281,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Recent Activity -->
         <% if (recentStats.length > 0) { %>
         <div class="row mb-4">
@@ -296,7 +296,7 @@
                     <div class="card-body">
                         <div class="activity-timeline">
                             <div class="row">
-                                <% recentStats.forEach((stat, index) => { 
+                                <% recentStats.forEach((stat, index) => {
                                     const percentage = (stat.count / Math.max(...recentStats.map(s => s.count))) * 100;
                                     const isToday = moment(stat._id).isSame(moment(), 'day');
                                     const dayName = moment(stat._id).format('dddd');
@@ -320,7 +320,7 @@
                                             </div>
                                             <div class="activity-bar">
                                                 <div class="progress" style="height: 4px;">
-                                                    <div class="progress-bar <%= isToday ? 'bg-warning' : 'bg-info' %>" 
+                                                    <div class="progress-bar <%= isToday ? 'bg-warning' : 'bg-info' %>"
                                                          style="width: <%= percentage %>%;"></div>
                                                 </div>
                                             </div>
@@ -400,13 +400,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-lg-4 mb-4">
                 <div class="card shadow-sm bg-primary text-white">
                     <div class="card-body text-center">
-                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                             alt="IoTCommunity.Space" 
-                             height="60" 
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                             alt="IoTCommunity.Space"
+                             height="60"
                              class="mb-3"
                              style="filter: brightness(0) invert(1);"
                              onerror="this.style.display='none';">
@@ -458,14 +458,14 @@
                                 </a>
                             </div>
                             <div class="col-md-3 col-sm-6 mb-3">
-                                <a href="http://localhost:3000/api/v1/articles" target="_blank" class="btn btn-outline-info btn-lg w-100">
+                                <a href="<%= apiBaseUrl %>/api/v1/articles" target="_blank" class="btn btn-outline-info btn-lg w-100">
                                     <i class="fas fa-code me-2"></i>
                                     <div>API Access</div>
                                     <small>REST endpoints</small>
                                 </a>
                             </div>
                             <div class="col-md-3 col-sm-6 mb-3">
-                                <a href="http://localhost:3000/health" target="_blank" class="btn btn-outline-success btn-lg w-100">
+                                <a href="<%= apiHealthUrl %>" target="_blank" class="btn btn-outline-success btn-lg w-100">
                                     <i class="fas fa-heartbeat me-2"></i>
                                     <div>Health Check</div>
                                     <small>System status</small>
@@ -491,9 +491,9 @@
             <div class="row align-items-center">
                 <div class="col-md-6">
                     <div class="d-flex align-items-center">
-                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                             alt="IoTCommunity.Space Logo" 
-                             height="32" 
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                             alt="IoTCommunity.Space Logo"
+                             height="32"
                              class="me-2"
                              style="filter: brightness(0) invert(1);"
                              onerror="this.style.display='none';">
@@ -514,10 +514,10 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Chart.js for enhanced charts -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
+
     <!-- Custom JavaScript -->
     <script>
         // Initialize tooltips
