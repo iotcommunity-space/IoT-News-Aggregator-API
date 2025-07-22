@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  # MongoDB Database - AVX Compatible Version
+  # MongoDB Database
   mongodb:
-    image: mongo:4.4  # Changed to 4.4 - Last version without AVX requirement
+    image: mongo:7.0
     container_name: iot_news_mongodb
     restart: unless-stopped
     environment:
@@ -16,7 +16,7 @@ services:
     networks:
       - iot_news_network
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/iot_news_api --quiet
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/iot_news_api --quiet
       interval: 30s
       timeout: 10s
       retries: 5
@@ -31,12 +31,6 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
-      - RSS_FEEDS=https://iottechnews.com/feed/,https://www.iot-now.com/feed/,https://iotbusinessnews.com/feed/,https://www.iotinsider.com/category/news/feed/,https://aws.amazon.com/blogs/iot/feed/,https://connectedworld.com/feed/
-      - API_VERSION=v1
-      - MAX_ARTICLES_PER_PAGE=50
-      - DEFAULT_ARTICLES_PER_PAGE=20
-      - CACHE_TTL=300
-      - RSS_FETCH_INTERVAL=*/15 * * * *
     ports:
       - "3000:3000"
     depends_on:
@@ -53,34 +47,9 @@ services:
       retries: 3
       start_period: 60s
 
-  # IoT News Web Dashboard
-  iot-news-dashboard:
-    build:
-      context: ./dashboard
-      dockerfile: Dockerfile
-    container_name: iot_news_dashboard
-    restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - DASHBOARD_PORT=4000
-      - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
-    ports:
-      - "4000:4000"
-    depends_on:
-      mongodb:
-        condition: service_healthy
-    networks:
-      - iot_news_network
-    healthcheck:
-      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:4000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 60s
-
   # MongoDB Admin Interface (Optional)
   mongo-express:
-    image: mongo-express:0.54  # Compatible version
+    image: mongo-express:1.0.0-alpha
     container_name: iot_news_mongo_express
     restart: unless-stopped
     environment:
