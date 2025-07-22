@@ -5,6 +5,7 @@ text
 - Docker Desktop installed
 - At least 2GB free RAM
 - Internet connection
+- Node, Npm, Docker and Docker compose
 
 ## 🚀 One-Command Startup
 
