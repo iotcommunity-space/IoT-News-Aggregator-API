@@ -2,8 +2,6 @@
 
 **A comprehensive IoT news platform with REST API and web dashboard, featuring real-time RSS aggregation, advanced image extraction, and intelligent content management. Built by [IoTCommunity.Space](https://iotcommunity.space/).**
 
-![IoT News Dashboard](https://img.shields.io/shields.io/badge/Database-MongoDB-greenshields.io/badge/License-MIT-yellowWhat This Platform Provides**
-
 ### **📰 For News Consumers**
 - **Beautiful Web Dashboard** - Browse IoT news with modern, responsive interface
 - **Advanced Search & Filtering** - Find articles by keywords, sources, categories, dates
