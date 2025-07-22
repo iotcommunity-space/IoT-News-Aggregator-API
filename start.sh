@@ -45,14 +45,14 @@ detect_os() {
         error "Cannot detect operating system"
         exit 1
     fi
-    
+
     log "Detected OS: $OS $VERSION"
 }
 
 # Update system packages
 update_system() {
     log "Updating system packages..."
-    
+
     if [[ "$OS" == *"Ubuntu"* ]] || [[ "$OS" == *"Debian"* ]]; then
         sudo apt-get update -y
         sudo apt-get upgrade -y
@@ -71,51 +71,51 @@ update_system() {
 # Install Docker
 install_docker() {
     log "Installing Docker..."
-    
+
     if [[ "$OS" == *"Ubuntu"* ]] || [[ "$OS" == *"Debian"* ]]; then
         # Remove old Docker versions
         sudo apt-get remove -y docker docker-engine docker.io containerd runc 2>/dev/null || true
-        
+
         # Add Docker's official GPG key
         sudo mkdir -p /etc/apt/keyrings
         curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-        
+
         # Add Docker repository
         echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-        
+
         # Install Docker
         sudo apt-get update -y
         sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-        
+
     elif [[ "$OS" == *"CentOS"* ]] || [[ "$OS" == *"Red Hat"* ]] || [[ "$OS" == *"Rocky"* ]] || [[ "$OS" == *"AlmaLinux"* ]]; then
         # Remove old Docker versions
         sudo yum remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-engine 2>/dev/null || true
-        
+
         # Add Docker repository
         sudo yum install -y yum-utils
         sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-        
+
         # Install Docker
         sudo yum install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-        
+
     elif [[ "$OS" == *"Fedora"* ]]; then
         # Remove old Docker versions
         sudo dnf remove -y docker docker-client docker-client-latest docker-common docker-latest docker-latest-logrotate docker-logrotate docker-selinux docker-engine-selinux docker-engine 2>/dev/null || true
-        
+
         # Add Docker repository
         sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
-        
+
         # Install Docker
         sudo dnf install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
     fi
-    
+
     # Start and enable Docker
     sudo systemctl start docker
     sudo systemctl enable docker
-    
+
     # Add current user to docker group
     sudo usermod -aG docker $USER
-    
+
     log "Docker installed successfully!"
     info "You may need to log out and back in for Docker group permissions to take effect"
 }
@@ -123,44 +123,44 @@ install_docker() {
 # Install Docker Compose (standalone version as fallback)
 install_docker_compose() {
     log "Installing Docker Compose standalone..."
-    
+
     # Get latest version
     DOCKER_COMPOSE_VERSION=$(curl -s https://api.github.com/repos/docker/compose/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
-    
+
     # Download and install
     sudo curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     sudo chmod +x /usr/local/bin/docker-compose
-    
+
     # Create symlink
     sudo ln -sf /usr/local/bin/docker-compose /usr/bin/docker-compose
-    
+
     log "Docker Compose installed successfully!"
 }
 
 # Install Node.js and npm
 install_nodejs() {
     log "Installing Node.js and npm..."
-    
+
     if [[ "$OS" == *"Ubuntu"* ]] || [[ "$OS" == *"Debian"* ]]; then
         # Install Node.js 18.x from NodeSource
         curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -
         sudo apt-get install -y nodejs
-        
+
     elif [[ "$OS" == *"CentOS"* ]] || [[ "$OS" == *"Red Hat"* ]] || [[ "$OS" == *"Rocky"* ]] || [[ "$OS" == *"AlmaLinux"* ]]; then
         # Install Node.js 18.x from NodeSource
         curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
         sudo yum install -y nodejs
-        
+
     elif [[ "$OS" == *"Fedora"* ]]; then
         # Install Node.js 18.x from NodeSource
         curl -fsSL https://rpm.nodesource.com/setup_18.x | sudo bash -
         sudo dnf install -y nodejs
     fi
-    
+
     # Verify installation
     node_version=$(node --version 2>/dev/null || echo "not found")
     npm_version=$(npm --version 2>/dev/null || echo "not found")
-    
+
     log "Node.js version: $node_version"
     log "npm version: $npm_version"
 }
@@ -168,10 +168,10 @@ install_nodejs() {
 # Check and install dependencies
 check_and_install_dependencies() {
     log "🔍 Checking system dependencies..."
-    
+
     # Detect OS first
     detect_os
-    
+
     # Check if running as root (not recommended for Docker)
     if [[ $EUID -eq 0 ]]; then
         warn "Running as root. It's recommended to run as a regular user."
@@ -181,15 +181,15 @@ check_and_install_dependencies() {
             exit 1
         fi
     fi
-    
+
     # Update system first
     update_system
-    
+
     # Check Docker
     if ! command -v docker &> /dev/null; then
         warn "Docker is not installed. Installing Docker..."
         install_docker
-        
+
         # Refresh group membership without logout
         if [[ ! $EUID -eq 0 ]]; then
             exec sg docker "$0 $*"
@@ -197,7 +197,7 @@ check_and_install_dependencies() {
     else
         log "✅ Docker is already installed: $(docker --version)"
     fi
-    
+
     # Check Docker Compose
     if ! command -v docker-compose &> /dev/null && ! docker compose version &> /dev/null; then
         warn "Docker Compose is not installed. Installing Docker Compose..."
@@ -209,7 +209,7 @@ check_and_install_dependencies() {
             log "✅ Docker Compose is already installed: $(docker-compose --version)"
         fi
     fi
-    
+
     # Check Node.js and npm
     if ! command -v node &> /dev/null || ! command -v npm &> /dev/null; then
         warn "Node.js or npm is not installed. Installing Node.js..."
@@ -218,61 +218,61 @@ check_and_install_dependencies() {
         log "✅ Node.js is already installed: $(node --version)"
         log "✅ npm is already installed: $(npm --version)"
     fi
-    
+
     # Verify Docker is running
     if ! docker info &> /dev/null; then
         error "Docker is not running. Starting Docker..."
         sudo systemctl start docker
         sleep 5
-        
+
         if ! docker info &> /dev/null; then
             error "Failed to start Docker. Please check your installation."
             exit 1
         fi
     fi
-    
+
     log "✅ All dependencies are installed and ready!"
 }
 
 # Main startup function
 start_iot_news_platform() {
     log "🚀 Starting IoT News API with MongoDB and Web Dashboard..."
-    
+
     # Create necessary directories
     mkdir -p logs
     log "📁 Created logs directory"
-    
+
     # Determine docker-compose command
     if docker compose version &> /dev/null; then
         DOCKER_COMPOSE_CMD="docker compose"
     else
         DOCKER_COMPOSE_CMD="docker-compose"
     fi
-    
+
     log "Using command: $DOCKER_COMPOSE_CMD"
-    
+
     # Stop any existing containers
     log "🛑 Stopping any existing containers..."
     $DOCKER_COMPOSE_CMD down 2>/dev/null || true
-    
+
     # Start the services
     log "📦 Building and starting containers..."
     $DOCKER_COMPOSE_CMD up --build -d
-    
+
     if [ $? -ne 0 ]; then
         error "Failed to start containers. Check the logs above."
         exit 1
     fi
-    
+
     log "⏳ Waiting for services to be ready..."
     sleep 45
-    
+
     log "🔍 Checking service health..."
     $DOCKER_COMPOSE_CMD ps
-    
+
     # Health checks
     log "🏥 Performing health checks..."
-    
+
     # Check API health
     for i in {1..30}; do
         if curl -s http://localhost:3000/health >/dev/null 2>&1; then
@@ -284,7 +284,7 @@ start_iot_news_platform() {
         fi
         sleep 2
     done
-    
+
     # Check Dashboard health
     for i in {1..30}; do
         if curl -s http://localhost:4000/health >/dev/null 2>&1; then
@@ -296,7 +296,7 @@ start_iot_news_platform() {
         fi
         sleep 2
     done
-    
+
     # Display success message
     echo ""
     echo "🎉 IoT News Platform is running successfully!"
@@ -316,3 +316,98 @@ start_iot_news_platform() {
     echo ""
     echo "⏱️  The system will start fetching RSS feeds automatically in ~10 seconds"
     echo "📱 Access the Web Dashboard for full news management capabilities!"
+    echo ""
+}
+
+# Show usage information
+show_usage() {
+    echo ""
+    echo "IoT News Dashboard - Auto-Install & Start Script"
+    echo "Usage: $0 [OPTIONS]"
+    echo ""
+    echo "Options:"
+    echo "  --help, -h          Show this help message"
+    echo "  --install-deps      Only install dependencies (Docker, Node.js, etc.)"
+    echo "  --start             Only start the platform (skip dependency check)"
+    echo "  --no-deps           Start without checking dependencies"
+    echo ""
+    echo "Examples:"
+    echo "  $0                  # Full installation and startup"
+    echo "  $0 --install-deps   # Install dependencies only"
+    echo "  $0 --start          # Start platform with dependency check"
+    echo "  $0 --no-deps        # Start platform without dependency check"
+    echo ""
+}
+
+# Handle command line arguments
+handle_arguments() {
+    case "$1" in
+        --help|-h)
+            show_usage
+            exit 0
+            ;;
+        --install-deps)
+            log "Installing dependencies only..."
+            check_and_install_dependencies
+            log "✅ Dependencies installation completed!"
+            exit 0
+            ;;
+        --start)
+            log "Starting platform with dependency check..."
+            check_and_install_dependencies
+            start_iot_news_platform
+            exit 0
+            ;;
+        --no-deps)
+            log "Starting platform without dependency check..."
+            start_iot_news_platform
+            exit 0
+            ;;
+        "")
+            # Default: full installation and startup
+            ;;
+        *)
+            error "Unknown option: $1"
+            show_usage
+            exit 1
+            ;;
+    esac
+}
+
+# Main execution
+main() {
+    # Handle command line arguments
+    handle_arguments "$1"
+
+    # Print banner
+    echo ""
+    echo "╔══════════════════════════════════════════════════════════════╗"
+    echo "║                   IoT News Dashboard                        ║"
+    echo "║                   Auto-Install Script                       ║"
+    echo "║                                                              ║"
+    echo "║  🚀 Complete IoT News Aggregation Platform                  ║"
+    echo "║  📰 Web Dashboard + REST API + MongoDB                      ║"
+    echo "║  🐳 Dockerized for Easy Deployment                          ║"
+    echo "║                                                              ║"
+    echo "║  Built by IoTCommunity.Space                                 ║"
+    echo "╚══════════════════════════════════════════════════════════════╝"
+    echo ""
+
+    # Check and install dependencies
+    check_and_install_dependencies
+
+    # Start the IoT News platform
+    start_iot_news_platform
+
+    # Final message
+    echo ""
+    log "🎯 IoT News Dashboard deployment completed successfully!"
+    log "📱 Open http://localhost:4000 in your browser to access the dashboard"
+    echo ""
+}
+
+# Error handling
+trap 'error "Script interrupted. Cleaning up..."; exit 1' INT TERM
+
+# Run main function with all arguments
+main "$@"
