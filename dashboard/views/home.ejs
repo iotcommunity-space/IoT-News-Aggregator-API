@@ -7,17 +7,17 @@
     <meta name="description" content="Real-time IoT industry news aggregation platform built by IoTCommunity.Space">
     <meta name="author" content="IoTCommunity.Space">
     <meta name="keywords" content="IoT, Internet of Things, News, Dashboard, IoTCommunity.Space">
-    
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
     <link href="/css/style.css" rel="stylesheet">
-    
+
     <!-- Favicon -->
     <link rel="icon" type="image/png" href="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
-    
+
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="IoT News Dashboard - IoTCommunity.Space">
     <meta property="og:description" content="Real-time IoT industry news aggregation platform">
@@ -29,18 +29,18 @@
     <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                     alt="IoTCommunity.Space Logo" 
-                     height="32" 
+                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                     alt="IoTCommunity.Space Logo"
+                     height="32"
                      class="me-2 brand-logo"
                      onerror="this.style.display='none';">
                 <span class="fw-bold">IoT News Dashboard</span>
             </a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -54,10 +54,10 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/api/v1/articles" target="_blank">
-                            <i class="fas fa-code me-1"></i>API
+                        <a class="nav-link px-3" href="<%= apiBaseUrl %>/api/v1/articles" target="_blank">
+                          <i class="fas fa-code me-1"></i>API
                         </a>
-                    </li>
+                      </li>
                     <li class="nav-item">
                         <a class="nav-link text-warning fw-bold" href="https://iotcommunity.space/" target="_blank">
                             <i class="fas fa-external-link-alt me-1"></i>IoTCommunity.Space
@@ -74,9 +74,9 @@
             <div class="row align-items-center">
                 <div class="col-lg-8">
                     <div class="hero-content">
-                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                             alt="IoTCommunity.Space Logo" 
-                             height="64" 
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                             alt="IoTCommunity.Space Logo"
+                             height="64"
                              class="mb-3 hero-logo"
                              onerror="this.style.display='none';">
                         <h1 class="display-4 mb-3 fw-bold">
@@ -113,9 +113,9 @@
                 <div class="col-lg-4 text-center">
                     <div class="hero-branding">
                         <div class="brand-card">
-                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                                 alt="IoTCommunity.Space" 
-                                 height="80" 
+                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                                 alt="IoTCommunity.Space"
+                                 height="80"
                                  class="mb-3"
                                  onerror="this.style.display='none';">
                             <h5 class="text-white">Built by</h5>
@@ -140,7 +140,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         <% } %>
-        
+
         <% if (typeof query !== 'undefined' && query.deleted) { %>
             <div class="alert alert-info alert-dismissible fade show custom-alert" role="alert">
                 <i class="fas fa-trash-alt me-2"></i>
@@ -166,15 +166,15 @@
                                 <label class="form-label fw-bold">
                                     <i class="fas fa-search me-1 text-primary"></i>Search Keywords
                                 </label>
-                                <input type="text" 
-                                       class="form-control form-control-lg" 
-                                       name="search" 
-                                       value="<%= search %>" 
+                                <input type="text"
+                                       class="form-control form-control-lg"
+                                       name="search"
+                                       value="<%= search %>"
                                        placeholder="AI, Security, IoT devices..."
                                        id="searchInput">
                                 <div class="form-text">Search in titles, content, and categories</div>
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">
                                     <i class="fas fa-newspaper me-1 text-primary"></i>News Source
@@ -182,14 +182,14 @@
                                 <select class="form-select form-select-lg" name="source">
                                     <option value="">All Sources</option>
                                     <% sources.forEach(source => { %>
-                                        <option value="<%= source._id %>" 
+                                        <option value="<%= source._id %>"
                                                 <%= selectedSource === source._id ? 'selected' : '' %>>
                                             <%= source.name %> (<%= source.count %>)
                                         </option>
                                     <% }) %>
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-3">
                                 <label class="form-label fw-bold">
                                     <i class="fas fa-tags me-1 text-primary"></i>Category
@@ -197,14 +197,14 @@
                                 <select class="form-select form-select-lg" name="category">
                                     <option value="">All Categories</option>
                                     <% categories.slice(0, 15).forEach(category => { %>
-                                        <option value="<%= category._id %>" 
+                                        <option value="<%= category._id %>"
                                                 <%= selectedCategory === category._id ? 'selected' : '' %>>
                                             <%= category._id %> (<%= category.count %>)
                                         </option>
                                     <% }) %>
                                 </select>
                             </div>
-                            
+
                             <div class="col-md-2">
                                 <label class="form-label">&nbsp;</label>
                                 <div class="d-grid gap-2">
@@ -265,8 +265,8 @@
                             <!-- Article Image -->
                             <div class="card-img-container">
                                 <% if (article.featuredImage && article.featuredImage.url) { %>
-                                    <img src="<%= article.featuredImage.url %>" 
-                                         class="card-img-top" 
+                                    <img src="<%= article.featuredImage.url %>"
+                                         class="card-img-top"
                                          alt="<%= article.featuredImage.alt || article.title %>"
                                          onerror="this.src='https://placehold.co/400x200/3498db/ffffff?text=IoT+News';"
                                          loading="lazy">
@@ -276,7 +276,7 @@
                                         <p class="mt-2 text-muted">IoT News</p>
                                     </div>
                                 <% } %>
-                                
+
                                 <!-- Source Badge -->
                                 <div class="source-overlay">
                                     <a href="/?source=<%= article.source.domain %>" class="source-badge">
@@ -284,7 +284,7 @@
                                     </a>
                                 </div>
                             </div>
-                            
+
                             <div class="card-body d-flex flex-column">
                                 <!-- Article Title -->
                                 <h5 class="card-title">
@@ -292,12 +292,12 @@
                                         <%= article.title %>
                                     </a>
                                 </h5>
-                                
+
                                 <!-- Article Excerpt -->
                                 <p class="card-text flex-grow-1 text-muted">
                                     <%= article.excerpt %>
                                 </p>
-                                
+
                                 <!-- Article Meta -->
                                 <div class="article-meta">
                                     <div class="row g-2 mb-3">
@@ -312,7 +312,7 @@
                                             </small>
                                         </div>
                                     </div>
-                                    
+
                                     <!-- Categories -->
                                     <% if (article.categories && article.categories.length > 0) { %>
                                         <div class="categories-tags mb-3">
@@ -329,7 +329,7 @@
                                         </div>
                                     <% } %>
                                 </div>
-                                
+
                                 <!-- Action Buttons -->
                                 <div class="card-actions">
                                     <div class="d-flex justify-content-between align-items-center">
@@ -341,7 +341,7 @@
                                                 <i class="fas fa-external-link-alt"></i>
                                             </a>
                                         </div>
-                                        
+
                                         <div class="dropdown">
                                             <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
                                                 <i class="fas fa-ellipsis-v"></i>
@@ -366,7 +366,7 @@
                     </div>
                 <% }) %>
             </div>
-            
+
             <!-- Pagination -->
             <% if (totalPages > 1) { %>
                 <nav aria-label="Articles pagination" class="pagination-wrapper">
@@ -378,10 +378,10 @@
                                 </a>
                             </li>
                         <% } %>
-                        
+
                         <% const startPage = Math.max(1, currentPage - 2); %>
                         <% const endPage = Math.min(totalPages, currentPage + 2); %>
-                        
+
                         <% if (startPage > 1) { %>
                             <li class="page-item">
                                 <a class="page-link" href="/?page=1&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">1</a>
@@ -392,7 +392,7 @@
                                 </li>
                             <% } %>
                         <% } %>
-                        
+
                         <% for (let i = startPage; i <= endPage; i++) { %>
                             <li class="page-item <%= i === currentPage ? 'active' : '' %>">
                                 <a class="page-link" href="/?page=<%= i %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">
@@ -400,7 +400,7 @@
                                 </a>
                             </li>
                         <% } %>
-                        
+
                         <% if (endPage < totalPages) { %>
                             <% if (endPage < totalPages - 1) { %>
                                 <li class="page-item disabled">
@@ -411,7 +411,7 @@
                                 <a class="page-link" href="/?page=<%= totalPages %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>"><%= totalPages %></a>
                             </li>
                         <% } %>
-                        
+
                         <% if (currentPage < totalPages) { %>
                             <li class="page-item">
                                 <a class="page-link" href="/?page=<%= currentPage + 1 %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">
@@ -422,7 +422,7 @@
                     </ul>
                 </nav>
             <% } %>
-            
+
         <% } else { %>
             <!-- No Articles Found -->
             <div class="no-articles-section">
@@ -488,9 +488,9 @@
                 <div class="col-lg-6">
                     <div class="footer-brand mb-4">
                         <div class="d-flex align-items-center mb-3">
-                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                                 alt="IoTCommunity.Space Logo" 
-                                 height="40" 
+                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                                 alt="IoTCommunity.Space Logo"
+                                 height="40"
                                  class="me-3"
                                  onerror="this.style.display='none';">
                             <div>
@@ -498,17 +498,17 @@
                                 <p class="mb-0 text-light opacity-75">Real-time IoT industry news aggregation</p>
                             </div>
                         </div>
-                        
+
                         <p class="text-light mb-3">
-                            Stay connected with the latest developments in the Internet of Things ecosystem. 
+                            Stay connected with the latest developments in the Internet of Things ecosystem.
                             Our platform aggregates news from the most trusted IoT industry sources.
                         </p>
-                        
+
                         <div class="social-links">
                             <a href="https://iotcommunity.space/" target="_blank" class="social-link">
                                 <i class="fas fa-globe"></i>
                             </a>
-                            <a href="http://localhost:3000/health" target="_blank" class="social-link">
+                                <a href="<%= apiHealthUrl %>" target="_blank" class="social-link">
                                 <i class="fas fa-heartbeat"></i>
                             </a>
                             <a href="/stats" class="social-link">
@@ -517,7 +517,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-lg-6">
                     <div class="row">
                         <div class="col-md-6">
@@ -525,8 +525,8 @@
                             <ul class="list-unstyled footer-links">
                                 <li><a href="/" class="text-light">Home</a></li>
                                 <li><a href="/stats" class="text-light">Statistics</a></li>
-                                <li><a href="http://localhost:3000/api/v1/articles" target="_blank" class="text-light">API Documentation</a></li>
-                                <li><a href="http://localhost:3000/health" target="_blank" class="text-light">System Health</a></li>
+                                <li><a href="<%= apiBaseUrl %>/api/v1/articles" target="_blank" class="text-light">API Documentation</a></li>
+                                <li><a href="<%= apiHealthUrl %>" target="_blank" class="text-light">System Health</a></li>
                             </ul>
                         </div>
                         <div class="col-md-6">
@@ -541,13 +541,13 @@
                     </div>
                 </div>
             </div>
-            
+
             <hr class="my-4 border-light opacity-25">
-            
+
             <div class="row align-items-center">
                 <div class="col-md-8">
                     <p class="mb-0 text-light opacity-75">
-                        &copy; 2025 
+                        &copy; 2025
                         <a href="https://iotcommunity.space/" target="_blank" class="text-warning fw-bold text-decoration-none">
                             IoTCommunity.Space
                         </a>
@@ -565,11 +565,11 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- AOS Animation Library -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    
+
     <!-- Custom JavaScript -->
     <script>
         // Initialize AOS animations
@@ -605,7 +605,7 @@
         searchInput.addEventListener('input', function() {
             clearTimeout(searchTimeout);
             const query = this.value.trim();
-            
+
             if (query.length > 0) {
                 searchTimeout = setTimeout(() => {
                     // Add search suggestions here if needed
