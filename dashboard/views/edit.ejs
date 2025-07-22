@@ -6,11 +6,11 @@
     <title>Edit <%= article.title %> - IoT News Dashboard</title>
     <meta name="description" content="Edit IoT news article - <%= article.title %>">
     <meta name="author" content="IoTCommunity.Space">
-    
+
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="/css/style.css" rel="stylesheet">
-    
+
     <link rel="icon" type="image/png" href="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
 </head>
 <body>
@@ -18,19 +18,19 @@
     <nav class="navbar navbar-expand-lg navbar-dark">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center" href="/">
-                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                     alt="IoTCommunity.Space Logo" 
-                     height="32" 
+                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                     alt="IoTCommunity.Space Logo"
+                     height="32"
                      class="me-2"
                      style="filter: brightness(0) invert(1);"
                      onerror="this.style.display='none';">
                 <span class="fw-bold">IoT News Dashboard</span>
             </a>
-            
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            
+
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
@@ -44,7 +44,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="http://localhost:3000/api/v1/articles" target="_blank">
+                        <a class="nav-link" href="<%= apiBaseUrl %>/api/v1/articles" target="_blank">
                             <i class="fas fa-code me-1"></i>API
                         </a>
                     </li>
@@ -97,8 +97,8 @@
                                 </p>
                             </div>
                             <div class="col-md-4 text-md-end">
-                                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                                     alt="IoTCommunity.Space" 
+                                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                                     alt="IoTCommunity.Space"
                                      height="40"
                                      onerror="this.style.display='none';">
                             </div>
@@ -118,10 +118,10 @@
                             <div class="col-md-8">
                                 <h6 class="text-primary">Current Title:</h6>
                                 <p class="fw-bold mb-3"><%= article.title %></p>
-                                
+
                                 <h6 class="text-primary">Current Excerpt:</h6>
                                 <p class="text-muted mb-3"><%= article.excerpt %></p>
-                                
+
                                 <div class="row">
                                     <div class="col-md-6">
                                         <h6 class="text-primary">Author:</h6>
@@ -135,8 +135,8 @@
                             </div>
                             <div class="col-md-4">
                                 <% if (article.featuredImage && article.featuredImage.url) { %>
-                                    <img src="<%= article.featuredImage.url %>" 
-                                         class="img-fluid rounded" 
+                                    <img src="<%= article.featuredImage.url %>"
+                                         class="img-fluid rounded"
                                          alt="<%= article.featuredImage.alt || 'Article image' %>"
                                          onerror="this.src='https://placehold.co/300x200/3498db/ffffff?text=No+Image';">
                                 <% } else { %>
@@ -164,11 +164,11 @@
                                     <i class="fas fa-heading me-1 text-primary"></i>
                                     Article Title *
                                 </label>
-                                <input type="text" 
-                                       class="form-control form-control-lg" 
-                                       id="title" 
-                                       name="title" 
-                                       value="<%= article.title %>" 
+                                <input type="text"
+                                       class="form-control form-control-lg"
+                                       id="title"
+                                       name="title"
+                                       value="<%= article.title %>"
                                        required
                                        placeholder="Enter article title..."
                                        maxlength="200">
@@ -177,17 +177,17 @@
                                     Make it catchy and descriptive (max 200 characters)
                                 </div>
                             </div>
-                            
+
                             <!-- Author Field -->
                             <div class="mb-4">
                                 <label for="author" class="form-label fw-bold">
                                     <i class="fas fa-user me-1 text-primary"></i>
                                     Author
                                 </label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="author" 
-                                       name="author" 
+                                <input type="text"
+                                       class="form-control"
+                                       id="author"
+                                       name="author"
                                        value="<%= article.author %>"
                                        placeholder="Author name..."
                                        maxlength="100">
@@ -196,16 +196,16 @@
                                     Article author or source attribution
                                 </div>
                             </div>
-                            
+
                             <!-- Excerpt Field -->
                             <div class="mb-4">
                                 <label for="excerpt" class="form-label fw-bold">
                                     <i class="fas fa-quote-left me-1 text-primary"></i>
                                     Article Excerpt
                                 </label>
-                                <textarea class="form-control" 
-                                          id="excerpt" 
-                                          name="excerpt" 
+                                <textarea class="form-control"
+                                          id="excerpt"
+                                          name="excerpt"
                                           rows="4"
                                           placeholder="Brief description or summary of the article..."
                                           maxlength="500"><%= article.excerpt %></textarea>
@@ -214,16 +214,16 @@
                                     Short summary that appears in article cards (max 500 characters)
                                 </div>
                             </div>
-                            
+
                             <!-- Content Field -->
                             <div class="mb-4">
                                 <label for="content" class="form-label fw-bold">
                                     <i class="fas fa-file-alt me-1 text-primary"></i>
                                     Article Content
                                 </label>
-                                <textarea class="form-control" 
-                                          id="content" 
-                                          name="content" 
+                                <textarea class="form-control"
+                                          id="content"
+                                          name="content"
                                           rows="12"
                                           placeholder="Full article content (HTML supported)..."><%= article.content || '' %></textarea>
                                 <div class="form-text">
@@ -231,17 +231,17 @@
                                     Full article content - HTML tags are supported for formatting
                                 </div>
                             </div>
-                            
+
                             <!-- Categories Field -->
                             <div class="mb-4">
                                 <label for="categories" class="form-label fw-bold">
                                     <i class="fas fa-tags me-1 text-primary"></i>
                                     Categories
                                 </label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="categories" 
-                                       name="categories" 
+                                <input type="text"
+                                       class="form-control"
+                                       id="categories"
+                                       name="categories"
                                        value="<%= article.categories ? article.categories.join(', ') : '' %>"
                                        placeholder="IoT, Security, AI, Connected Devices..."
                                        data-bs-toggle="tooltip"
@@ -252,17 +252,17 @@
                                     Separate multiple categories with commas (e.g., IoT, Security, AI)
                                 </div>
                             </div>
-                            
+
                             <!-- Tags Field -->
                             <div class="mb-4">
                                 <label for="tags" class="form-label fw-bold">
                                     <i class="fas fa-hashtag me-1 text-primary"></i>
                                     Tags
                                 </label>
-                                <input type="text" 
-                                       class="form-control" 
-                                       id="tags" 
-                                       name="tags" 
+                                <input type="text"
+                                       class="form-control"
+                                       id="tags"
+                                       name="tags"
                                        value="<%= article.tags ? article.tags.join(', ') : '' %>"
                                        placeholder="iot-devices, cybersecurity, machine-learning..."
                                        data-bs-toggle="tooltip"
@@ -283,27 +283,27 @@
                                                 <i class="fas fa-info-circle me-1"></i>Article Metadata
                                             </h6>
                                             <div class="mb-2">
-                                                <strong>Published:</strong> 
+                                                <strong>Published:</strong>
                                                 <span class="text-muted"><%= moment(article.publishedAt).format('MMMM Do, YYYY [at] h:mm A') %></span>
                                             </div>
                                             <div class="mb-2">
-                                                <strong>Source:</strong> 
+                                                <strong>Source:</strong>
                                                 <span class="text-muted"><%= article.source.name %></span>
                                             </div>
                                             <div class="mb-2">
-                                                <strong>Original URL:</strong> 
+                                                <strong>Original URL:</strong>
                                                 <a href="<%= article.url %>" target="_blank" class="text-decoration-none">
                                                     <i class="fas fa-external-link-alt me-1"></i>View Original
                                                 </a>
                                             </div>
                                             <div class="mb-0">
-                                                <strong>Article ID:</strong> 
+                                                <strong>Article ID:</strong>
                                                 <code class="text-muted"><%= article.id %></code>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="col-md-6">
                                     <div class="card bg-light border-0">
                                         <div class="card-body">
@@ -311,45 +311,45 @@
                                                 <i class="fas fa-chart-line me-1"></i>Article Stats
                                             </h6>
                                             <div class="mb-2">
-                                                <strong>Relevance Score:</strong> 
+                                                <strong>Relevance Score:</strong>
                                                 <span class="badge bg-success"><%= (article.relevanceScore * 100).toFixed(0) %>%</span>
                                             </div>
                                             <div class="mb-2">
-                                                <strong>Comments:</strong> 
+                                                <strong>Comments:</strong>
                                                 <span class="text-muted"><%= article.commentCount || 0 %></span>
                                             </div>
                                             <div class="mb-2">
-                                                <strong>Duplicate Status:</strong> 
+                                                <strong>Duplicate Status:</strong>
                                                 <span class="badge <%= article.isDuplicate ? 'bg-warning' : 'bg-success' %>">
                                                     <%= article.isDuplicate ? 'Duplicate' : 'Unique' %>
                                                 </span>
                                             </div>
                                             <div class="mb-0">
-                                                <strong>Images:</strong> 
+                                                <strong>Images:</strong>
                                                 <span class="text-muted"><%= article.images ? article.images.length : 0 %> attached</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Action Buttons -->
                             <div class="d-flex justify-content-between align-items-center">
                                 <div>
                                     <a href="/article/<%= article.id %>" class="btn btn-outline-secondary">
                                         <i class="fas fa-times me-1"></i>Cancel Changes
                                     </a>
-                                    
+
                                     <a href="/" class="btn btn-outline-primary ms-2">
                                         <i class="fas fa-home me-1"></i>Back to Home
                                     </a>
                                 </div>
-                                
+
                                 <div>
                                     <button type="button" class="btn btn-info me-2" id="previewBtn">
                                         <i class="fas fa-eye me-1"></i>Preview Changes
                                     </button>
-                                    
+
                                     <button type="submit" class="btn btn-success" id="saveBtn">
                                         <i class="fas fa-save me-1"></i>Save Changes
                                     </button>
@@ -362,12 +362,12 @@
                 <!-- IoTCommunity.Space Attribution -->
                 <div class="text-center mt-4">
                     <p class="text-muted">
-                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
-                             alt="IoTCommunity.Space" 
-                             height="20" 
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png"
+                             alt="IoTCommunity.Space"
+                             height="20"
                              class="me-2"
                              onerror="this.style.display='none';">
-                        Article editing powered by 
+                        Article editing powered by
                         <a href="https://iotcommunity.space/" target="_blank" class="text-decoration-none fw-bold">
                             IoTCommunity.Space
                         </a>
@@ -420,7 +420,7 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    
+
     <!-- Custom JavaScript -->
     <script>
         // Initialize tooltips
@@ -441,7 +441,7 @@
                 const title = document.getElementById('title').value;
                 const excerpt = document.getElementById('excerpt').value;
                 const content = document.getElementById('content').value;
-                
+
                 // Simple preview in new window
                 const previewWindow = window.open('', 'preview', 'width=800,height=600');
                 previewWindow.document.write(`
@@ -465,14 +465,14 @@
             // Form submission handling
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
+
                 // Show loading modal
                 loadingModal.show();
-                
+
                 // Simulate form submission with timeout
                 setTimeout(() => {
                     loadingModal.hide();
-                    
+
                     // Actually submit the form
                     form.submit();
                 }, 1000);
@@ -481,7 +481,7 @@
             // Auto-save draft functionality (optional)
             let autoSaveTimeout;
             const inputs = form.querySelectorAll('input, textarea');
-            
+
             inputs.forEach(input => {
                 input.addEventListener('input', function() {
                     clearTimeout(autoSaveTimeout);
@@ -495,25 +495,25 @@
             // Character count for title and excerpt
             const titleInput = document.getElementById('title');
             const excerptInput = document.getElementById('excerpt');
-            
+
             function updateCharCount(input, maxLength) {
                 const current = input.value.length;
                 const remaining = maxLength - current;
                 let countEl = input.parentElement.querySelector('.char-count');
-                
+
                 if (!countEl) {
                     countEl = document.createElement('div');
                     countEl.className = 'char-count form-text';
                     input.parentElement.appendChild(countEl);
                 }
-                
+
                 countEl.innerHTML = `<i class="fas fa-keyboard me-1"></i>${current}/${maxLength} characters`;
                 countEl.className = `char-count form-text ${remaining < 20 ? 'text-warning' : ''}`;
             }
 
             titleInput.addEventListener('input', () => updateCharCount(titleInput, 200));
             excerptInput.addEventListener('input', () => updateCharCount(excerptInput, 500));
-            
+
             // Initialize char counts
             updateCharCount(titleInput, 200);
             updateCharCount(excerptInput, 500);
