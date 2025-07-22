@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IoT News Dashboard - Built by IoTCommunity.Space</title>
+    <meta name="description" content="Real-time IoT industry news aggregation platform built by IoTCommunity.Space">
+    <meta name="author" content="IoTCommunity.Space">
+    <meta name="keywords" content="IoT, Internet of Things, News, Dashboard, IoTCommunity.Space">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="IoT News Dashboard - IoTCommunity.Space">
+    <meta property="og:description" content="Real-time IoT industry news aggregation platform">
+    <meta property="og:image" content="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
+    <meta property="og:url" content="https://iotcommunity.space/">
+</head>
+<body>
+    <!-- Navigation with IoTCommunity.Space Branding -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                     alt="IoTCommunity.Space Logo" 
+                     height="32" 
+                     class="me-2 brand-logo"
+                     onerror="this.style.display='none';">
+                <span class="fw-bold">IoT News Dashboard</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/stats">
+                            <i class="fas fa-chart-bar me-1"></i>Statistics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:3000/api/v1/articles" target="_blank">
+                            <i class="fas fa-code me-1"></i>API
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning fw-bold" href="https://iotcommunity.space/" target="_blank">
+                            <i class="fas fa-external-link-alt me-1"></i>IoTCommunity.Space
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section with Enhanced Branding -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <div class="hero-content">
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                             alt="IoTCommunity.Space Logo" 
+                             height="64" 
+                             class="mb-3 hero-logo"
+                             onerror="this.style.display='none';">
+                        <h1 class="display-4 mb-3 fw-bold">
+                            IoT News Dashboard
+                        </h1>
+                        <p class="lead mb-4">Stay updated with the latest IoT industry news and insights from around the world</p>
+                        <div class="hero-stats">
+                            <div class="row text-center">
+                                <div class="col-md-4">
+                                    <div class="stat-item">
+                                        <i class="fas fa-newspaper fa-2x mb-2 text-warning"></i>
+                                        <h4 class="fw-bold"><%= total %></h4>
+                                        <p class="mb-0">Articles</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item">
+                                        <i class="fas fa-rss fa-2x mb-2 text-warning"></i>
+                                        <h4 class="fw-bold"><%= sources.length %></h4>
+                                        <p class="mb-0">Sources</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="stat-item">
+                                        <i class="fas fa-tags fa-2x mb-2 text-warning"></i>
+                                        <h4 class="fw-bold"><%= categories.length %></h4>
+                                        <p class="mb-0">Categories</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="hero-branding">
+                        <div class="brand-card">
+                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                                 alt="IoTCommunity.Space" 
+                                 height="80" 
+                                 class="mb-3"
+                                 onerror="this.style.display='none';">
+                            <h5 class="text-white">Built by</h5>
+                            <h3 class="text-warning fw-bold mb-3">IoTCommunity.Space</h3>
+                            <p class="text-light mb-3">Building the future of IoT together</p>
+                            <a href="https://iotcommunity.space/" target="_blank" class="btn btn-warning btn-lg">
+                                <i class="fas fa-rocket me-2"></i>Visit Our Community
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Alert Messages -->
+    <div class="container">
+        <% if (typeof query !== 'undefined' && query.updated) { %>
+            <div class="alert alert-success alert-dismissible fade show custom-alert" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <strong>Success!</strong> Article updated successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+        
+        <% if (typeof query !== 'undefined' && query.deleted) { %>
+            <div class="alert alert-info alert-dismissible fade show custom-alert" role="alert">
+                <i class="fas fa-trash-alt me-2"></i>
+                <strong>Deleted!</strong> Article removed successfully!
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Advanced Search and Filters -->
+    <div class="container">
+        <div class="search-section">
+            <div class="card border-0 shadow-lg">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-search me-2"></i>Find IoT News Articles
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="/" id="searchForm">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-search me-1 text-primary"></i>Search Keywords
+                                </label>
+                                <input type="text" 
+                                       class="form-control form-control-lg" 
+                                       name="search" 
+                                       value="<%= search %>" 
+                                       placeholder="AI, Security, IoT devices..."
+                                       id="searchInput">
+                                <div class="form-text">Search in titles, content, and categories</div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-newspaper me-1 text-primary"></i>News Source
+                                </label>
+                                <select class="form-select form-select-lg" name="source">
+                                    <option value="">All Sources</option>
+                                    <% sources.forEach(source => { %>
+                                        <option value="<%= source._id %>" 
+                                                <%= selectedSource === source._id ? 'selected' : '' %>>
+                                            <%= source.name %> (<%= source.count %>)
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-3">
+                                <label class="form-label fw-bold">
+                                    <i class="fas fa-tags me-1 text-primary"></i>Category
+                                </label>
+                                <select class="form-select form-select-lg" name="category">
+                                    <option value="">All Categories</option>
+                                    <% categories.slice(0, 15).forEach(category => { %>
+                                        <option value="<%= category._id %>" 
+                                                <%= selectedCategory === category._id ? 'selected' : '' %>>
+                                            <%= category._id %> (<%= category.count %>)
+                                        </option>
+                                    <% }) %>
+                                </select>
+                            </div>
+                            
+                            <div class="col-md-2">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        <i class="fas fa-search me-1"></i>Search
+                                    </button>
+                                    <% if (search || selectedSource || selectedCategory) { %>
+                                        <a href="/" class="btn btn-outline-secondary">
+                                            <i class="fas fa-times me-1"></i>Clear
+                                        </a>
+                                    <% } %>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Articles Grid -->
+    <div class="container">
+        <% if (articles.length > 0) { %>
+            <!-- Results Header -->
+            <div class="results-header mb-4">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h3 class="text-primary mb-2">
+                            <i class="fas fa-newspaper me-2"></i>Latest IoT News
+                        </h3>
+                        <p class="text-muted mb-0">
+                            Showing <%= articles.length %> of <%= total %> articles
+                            <% if (search || selectedSource || selectedCategory) { %>
+                                <span class="badge bg-primary ms-2">Filtered Results</span>
+                            <% } %>
+                        </p>
+                    </div>
+                    <div class="col-md-4 text-md-end">
+                        <div class="dropdown">
+                            <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-sort me-1"></i>Sort By
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="?sort=newest">Newest First</a></li>
+                                <li><a class="dropdown-item" href="?sort=oldest">Oldest First</a></li>
+                                <li><a class="dropdown-item" href="?sort=relevance">Most Relevant</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Articles Cards -->
+            <div class="row articles-grid">
+                <% articles.forEach((article, index) => { %>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <article class="card article-card h-100 shadow-hover" data-aos="fade-up" data-aos-delay="<%= index * 100 %>">
+                            <!-- Article Image -->
+                            <div class="card-img-container">
+                                <% if (article.featuredImage && article.featuredImage.url) { %>
+                                    <img src="<%= article.featuredImage.url %>" 
+                                         class="card-img-top" 
+                                         alt="<%= article.featuredImage.alt || article.title %>"
+                                         onerror="this.src='https://placehold.co/400x200/3498db/ffffff?text=IoT+News';"
+                                         loading="lazy">
+                                <% } else { %>
+                                    <div class="card-img-placeholder">
+                                        <i class="fas fa-newspaper fa-3x text-primary"></i>
+                                        <p class="mt-2 text-muted">IoT News</p>
+                                    </div>
+                                <% } %>
+                                
+                                <!-- Source Badge -->
+                                <div class="source-overlay">
+                                    <a href="/?source=<%= article.source.domain %>" class="source-badge">
+                                        <i class="fas fa-rss me-1"></i><%= article.source.name %>
+                                    </a>
+                                </div>
+                            </div>
+                            
+                            <div class="card-body d-flex flex-column">
+                                <!-- Article Title -->
+                                <h5 class="card-title">
+                                    <a href="/article/<%= article.id %>" class="text-decoration-none text-dark title-link">
+                                        <%= article.title %>
+                                    </a>
+                                </h5>
+                                
+                                <!-- Article Excerpt -->
+                                <p class="card-text flex-grow-1 text-muted">
+                                    <%= article.excerpt %>
+                                </p>
+                                
+                                <!-- Article Meta -->
+                                <div class="article-meta">
+                                    <div class="row g-2 mb-3">
+                                        <div class="col-6">
+                                            <small class="text-muted">
+                                                <i class="fas fa-user me-1"></i><%= article.author %>
+                                            </small>
+                                        </div>
+                                        <div class="col-6 text-end">
+                                            <small class="text-muted">
+                                                <i class="fas fa-clock me-1"></i><%= moment(article.publishedAt).fromNow() %>
+                                            </small>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Categories -->
+                                    <% if (article.categories && article.categories.length > 0) { %>
+                                        <div class="categories-tags mb-3">
+                                            <% article.categories.slice(0, 3).forEach(category => { %>
+                                                <a href="/?category=<%= category %>" class="category-tag">
+                                                    <i class="fas fa-tag me-1"></i><%= category %>
+                                                </a>
+                                            <% }) %>
+                                            <% if (article.categories.length > 3) { %>
+                                                <span class="category-tag bg-secondary">
+                                                    +<%= article.categories.length - 3 %> more
+                                                </span>
+                                            <% } %>
+                                        </div>
+                                    <% } %>
+                                </div>
+                                
+                                <!-- Action Buttons -->
+                                <div class="card-actions">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <a href="/article/<%= article.id %>" class="btn btn-primary">
+                                                <i class="fas fa-eye me-1"></i>Read More
+                                            </a>
+                                            <a href="<%= article.url %>" target="_blank" class="btn btn-outline-secondary ms-2" title="View Original">
+                                                <i class="fas fa-external-link-alt"></i>
+                                            </a>
+                                        </div>
+                                        
+                                        <div class="dropdown">
+                                            <button class="btn btn-sm btn-outline-secondary" type="button" data-bs-toggle="dropdown">
+                                                <i class="fas fa-ellipsis-v"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <a class="dropdown-item" href="/article/<%= article.id %>/edit">
+                                                        <i class="fas fa-edit me-2"></i>Edit Article
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <button class="dropdown-item text-danger" onclick="confirmDelete('<%= article.id %>', '<%= article.title.replace(/'/g, "\\'") %>')">
+                                                        <i class="fas fa-trash me-2"></i>Delete Article
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </article>
+                    </div>
+                <% }) %>
+            </div>
+            
+            <!-- Pagination -->
+            <% if (totalPages > 1) { %>
+                <nav aria-label="Articles pagination" class="pagination-wrapper">
+                    <ul class="pagination pagination-lg justify-content-center">
+                        <% if (currentPage > 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/?page=<%= currentPage - 1 %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">
+                                    <i class="fas fa-chevron-left me-1"></i>Previous
+                                </a>
+                            </li>
+                        <% } %>
+                        
+                        <% const startPage = Math.max(1, currentPage - 2); %>
+                        <% const endPage = Math.min(totalPages, currentPage + 2); %>
+                        
+                        <% if (startPage > 1) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/?page=1&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">1</a>
+                            </li>
+                            <% if (startPage > 2) { %>
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            <% } %>
+                        <% } %>
+                        
+                        <% for (let i = startPage; i <= endPage; i++) { %>
+                            <li class="page-item <%= i === currentPage ? 'active' : '' %>">
+                                <a class="page-link" href="/?page=<%= i %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">
+                                    <%= i %>
+                                </a>
+                            </li>
+                        <% } %>
+                        
+                        <% if (endPage < totalPages) { %>
+                            <% if (endPage < totalPages - 1) { %>
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            <% } %>
+                            <li class="page-item">
+                                <a class="page-link" href="/?page=<%= totalPages %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>"><%= totalPages %></a>
+                            </li>
+                        <% } %>
+                        
+                        <% if (currentPage < totalPages) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="/?page=<%= currentPage + 1 %>&search=<%= search %>&source=<%= selectedSource %>&category=<%= selectedCategory %>">
+                                    Next<i class="fas fa-chevron-right ms-1"></i>
+                                </a>
+                            </li>
+                        <% } %>
+                    </ul>
+                </nav>
+            <% } %>
+            
+        <% } else { %>
+            <!-- No Articles Found -->
+            <div class="no-articles-section">
+                <div class="text-center py-5">
+                    <div class="no-articles-icon">
+                        <i class="fas fa-newspaper fa-5x text-muted mb-4"></i>
+                    </div>
+                    <h3 class="text-muted mb-3">No Articles Found</h3>
+                    <% if (search || selectedSource || selectedCategory) { %>
+                        <p class="text-muted mb-4">No articles match your current search criteria. Try adjusting your filters.</p>
+                        <a href="/" class="btn btn-primary btn-lg">
+                            <i class="fas fa-refresh me-2"></i>Clear Filters & Show All
+                        </a>
+                    <% } else { %>
+                        <p class="text-muted mb-4">Articles are being loaded from IoT news sources. Please check back in a moment.</p>
+                        <button onclick="location.reload()" class="btn btn-primary btn-lg">
+                            <i class="fas fa-refresh me-2"></i>Refresh Page
+                        </button>
+                    <% } %>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">
+                        <i class="fas fa-exclamation-triangle me-2"></i>Confirm Delete
+                    </h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center mb-3">
+                        <i class="fas fa-trash-alt fa-4x text-danger"></i>
+                    </div>
+                    <p class="text-center">Are you sure you want to delete this article?</p>
+                    <div class="alert alert-warning">
+                        <strong id="deleteArticleTitle"></strong>
+                    </div>
+                    <p class="text-muted text-center">This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times me-1"></i>Cancel
+                    </button>
+                    <form id="deleteForm" method="POST" style="display: inline;">
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash me-1"></i>Delete Article
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Footer with IoTCommunity.Space Branding -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="footer-brand mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                                 alt="IoTCommunity.Space Logo" 
+                                 height="40" 
+                                 class="me-3"
+                                 onerror="this.style.display='none';">
+                            <div>
+                                <h5 class="mb-1 text-white">IoT News Dashboard</h5>
+                                <p class="mb-0 text-light opacity-75">Real-time IoT industry news aggregation</p>
+                            </div>
+                        </div>
+                        
+                        <p class="text-light mb-3">
+                            Stay connected with the latest developments in the Internet of Things ecosystem. 
+                            Our platform aggregates news from the most trusted IoT industry sources.
+                        </p>
+                        
+                        <div class="social-links">
+                            <a href="https://iotcommunity.space/" target="_blank" class="social-link">
+                                <i class="fas fa-globe"></i>
+                            </a>
+                            <a href="http://localhost:3000/health" target="_blank" class="social-link">
+                                <i class="fas fa-heartbeat"></i>
+                            </a>
+                            <a href="/stats" class="social-link">
+                                <i class="fas fa-chart-bar"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-lg-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-warning mb-3">Platform</h6>
+                            <ul class="list-unstyled footer-links">
+                                <li><a href="/" class="text-light">Home</a></li>
+                                <li><a href="/stats" class="text-light">Statistics</a></li>
+                                <li><a href="http://localhost:3000/api/v1/articles" target="_blank" class="text-light">API Documentation</a></li>
+                                <li><a href="http://localhost:3000/health" target="_blank" class="text-light">System Health</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-warning mb-3">IoTCommunity.Space</h6>
+                            <ul class="list-unstyled footer-links">
+                                <li><a href="https://iotcommunity.space/" target="_blank" class="text-light">Visit Community</a></li>
+                                <li><a href="https://iotcommunity.space/" target="_blank" class="text-light">Join Our Network</a></li>
+                                <li><a href="https://iotcommunity.space/" target="_blank" class="text-light">IoT Resources</a></li>
+                                <li><a href="https://iotcommunity.space/" target="_blank" class="text-light">Connect with Us</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <hr class="my-4 border-light opacity-25">
+            
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <p class="mb-0 text-light opacity-75">
+                        &copy; 2025 
+                        <a href="https://iotcommunity.space/" target="_blank" class="text-warning fw-bold text-decoration-none">
+                            IoTCommunity.Space
+                        </a>
+                        - Building the future of IoT together
+                    </p>
+                </div>
+                <div class="col-md-4 text-md-end">
+                    <p class="mb-0 text-light opacity-75">
+                        Made with <i class="fas fa-heart text-danger"></i> for the IoT Community
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize AOS animations
+        AOS.init({
+            duration: 800,
+            once: true,
+            offset: 100
+        });
+
+        // Delete confirmation
+        function confirmDelete(articleId, articleTitle) {
+            document.getElementById('deleteArticleTitle').textContent = articleTitle;
+            document.getElementById('deleteForm').action = `/article/${articleId}/delete`;
+            new bootstrap.Modal(document.getElementById('deleteModal')).show();
+        }
+
+        // Auto-hide alerts
+        setTimeout(function() {
+            const alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => {
+                if (alert.classList.contains('alert-success') || alert.classList.contains('alert-info')) {
+                    alert.style.transition = 'opacity 0.5s';
+                    alert.style.opacity = '0';
+                    setTimeout(() => alert.remove(), 500);
+                }
+            });
+        }, 5000);
+
+        // Search form enhancements
+        const searchInput = document.getElementById('searchInput');
+        let searchTimeout;
+
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            const query = this.value.trim();
+            
+            if (query.length > 0) {
+                searchTimeout = setTimeout(() => {
+                    // Add search suggestions here if needed
+                }, 300);
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // IoTCommunity.Space branding
+        console.log('%c🚀 IoT News Dashboard', 'color: #3498db; font-size: 24px; font-weight: bold;');
+        console.log('%c🌐 Built by IoTCommunity.Space', 'color: #2c3e50; font-size: 16px;');
+        console.log('%c💡 Visit: https://iotcommunity.space/', 'color: #27ae60; font-size: 14px;');
+        console.log('%c📊 Articles loaded: <%= total %>', 'color: #e74c3c; font-size: 12px;');
+
+        // Performance monitoring
+        window.addEventListener('load', function() {
+            console.log('%c⚡ Page loaded in ' + Math.round(performance.now()) + 'ms', 'color: #f39c12; font-size: 12px;');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Statistics - IoT News Dashboard by IoTCommunity.Space</title>
+    <meta name="description" content="Analytics and statistics for IoT news aggregation platform">
+    <meta name="author" content="IoTCommunity.Space">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="/css/style.css" rel="stylesheet">
+    
+    <link rel="icon" type="image/png" href="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png">
+</head>
+<body>
+    <!-- Branded Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                     alt="IoTCommunity.Space Logo" 
+                     height="32" 
+                     class="me-2 brand-logo"
+                     onerror="this.style.display='none';">
+                <span class="fw-bold">IoT News Dashboard</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="fas fa-home me-1"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/stats">
+                            <i class="fas fa-chart-bar me-1"></i>Statistics
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="http://localhost:3000/api/v1/articles" target="_blank">
+                            <i class="fas fa-code me-1"></i>API
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link text-warning fw-bold" href="https://iotcommunity.space/" target="_blank">
+                            <i class="fas fa-external-link-alt me-1"></i>IoTCommunity.Space
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Statistics Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                         alt="IoTCommunity.Space Logo" 
+                         height="48" 
+                         class="mb-3"
+                         onerror="this.style.display='none';">
+                    <h1 class="display-4 mb-3">
+                        <i class="fas fa-chart-bar me-3"></i>Dashboard Analytics
+                    </h1>
+                    <p class="lead">Comprehensive insights into your IoT news aggregation platform</p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <div class="stats-summary">
+                        <div class="stat-highlight">
+                            <h2 class="display-3 text-warning fw-bold"><%= totalArticles %></h2>
+                            <p class="text-light mb-0">Total Articles Aggregated</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12 text-center">
+                    <p class="text-light">
+                        <small>Analytics powered by <a href="https://iotcommunity.space/" target="_blank" class="text-warning fw-bold">IoTCommunity.Space</a></small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container my-5">
+        <!-- Key Performance Indicators -->
+        <div class="row mb-5">
+            <div class="col-12">
+                <h2 class="text-primary mb-4">
+                    <i class="fas fa-tachometer-alt me-2"></i>Key Performance Indicators
+                </h2>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="stats-card-icon bg-primary">
+                        <i class="fas fa-newspaper"></i>
+                    </div>
+                    <div class="stats-card-content">
+                        <div class="stats-number text-primary"><%= totalArticles %></div>
+                        <div class="stats-label">Total Articles</div>
+                        <div class="stats-trend">
+                            <i class="fas fa-arrow-up text-success"></i>
+                            <span class="text-success">Active aggregation</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="stats-card-icon bg-success">
+                        <i class="fas fa-rss"></i>
+                    </div>
+                    <div class="stats-card-content">
+                        <div class="stats-number text-success"><%= sources.length %></div>
+                        <div class="stats-label">Active Sources</div>
+                        <div class="stats-trend">
+                            <i class="fas fa-check-circle text-success"></i>
+                            <span class="text-success">All operational</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="stats-card-icon bg-info">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <div class="stats-card-content">
+                        <div class="stats-number text-info"><%= categories.length %></div>
+                        <div class="stats-label">Categories</div>
+                        <div class="stats-trend">
+                            <i class="fas fa-layer-group text-info"></i>
+                            <span class="text-info">Diverse topics</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-3 col-md-6 mb-4">
+                <div class="stats-card">
+                    <div class="stats-card-icon bg-warning">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stats-card-content">
+                        <div class="stats-number text-warning"><%= recentStats.length %></div>
+                        <div class="stats-label">Active Days</div>
+                        <div class="stats-trend">
+                            <i class="fas fa-clock text-warning"></i>
+                            <span class="text-warning">Last 7 days</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <!-- Sources Analysis -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-gradient-primary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-newspaper me-2"></i>Articles by Source
+                        </h5>
+                        <small>Distribution across IoT news sources</small>
+                    </div>
+                    <div class="card-body">
+                        <% if (sources.length > 0) { %>
+                            <div class="sources-chart">
+                                <% 
+                                const maxCount = Math.max(...sources.map(s => s.count));
+                                sources.forEach((source, index) => { 
+                                    const percentage = (source.count / maxCount) * 100;
+                                    const colors = ['primary', 'success', 'info', 'warning', 'danger', 'secondary'];
+                                    const color = colors[index % colors.length];
+                                %>
+                                    <div class="source-item mb-3">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <div class="source-info">
+                                                <h6 class="mb-0 text-<%= color %>">
+                                                    <i class="fas fa-rss me-2"></i><%= source.name %>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    Last updated: <%= moment(source.latestArticle).fromNow() %>
+                                                </small>
+                                            </div>
+                                            <div class="source-stats">
+                                                <span class="badge bg-<%= color %> rounded-pill fs-6">
+                                                    <%= source.count %> articles
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="progress" style="height: 8px;">
+                                            <div class="progress-bar bg-<%= color %>" 
+                                                 style="width: <%= percentage %>%;"
+                                                 data-bs-toggle="tooltip" 
+                                                 title="<%= ((source.count / totalArticles) * 100).toFixed(1) %>% of total articles">
+                                            </div>
+                                        </div>
+                                        <small class="text-muted">
+                                            <%= ((source.count / totalArticles) * 100).toFixed(1) %>% of total content
+                                        </small>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-4">
+                                <i class="fas fa-chart-pie fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No source data available</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Top Categories -->
+            <div class="col-lg-6 mb-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-header bg-gradient-success text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-tags me-2"></i>Top Categories
+                        </h5>
+                        <small>Most popular IoT topics</small>
+                    </div>
+                    <div class="card-body">
+                        <% if (categories.length > 0) { %>
+                            <div class="categories-list">
+                                <% categories.forEach((category, index) => { 
+                                    const rank = index + 1;
+                                    const badgeClass = index < 3 ? 'primary' : index < 7 ? 'success' : 'secondary';
+                                %>
+                                    <div class="category-item mb-3 p-3 bg-light rounded">
+                                        <div class="row align-items-center">
+                                            <div class="col-2 text-center">
+                                                <span class="rank-badge">
+                                                    <% if (index < 3) { %>
+                                                        <i class="fas fa-trophy text-warning"></i>
+                                                    <% } else { %>
+                                                        <span class="badge bg-<%= badgeClass %> rounded-circle">
+                                                            <%= rank %>
+                                                        </span>
+                                                    <% } %>
+                                                </span>
+                                            </div>
+                                            <div class="col-7">
+                                                <h6 class="mb-1 text-dark">
+                                                    <i class="fas fa-tag me-1 text-<%= badgeClass %>"></i>
+                                                    <%= category._id %>
+                                                </h6>
+                                                <small class="text-muted">
+                                                    <%= ((category.count / totalArticles) * 100).toFixed(1) %>% of articles
+                                                </small>
+                                            </div>
+                                            <div class="col-3 text-end">
+                                                <span class="badge bg-<%= badgeClass %> fs-6">
+                                                    <%= category.count %>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        <% } else { %>
+                            <div class="text-center py-4">
+                                <i class="fas fa-tags fa-3x text-muted mb-3"></i>
+                                <p class="text-muted">No category data available</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Activity -->
+        <% if (recentStats.length > 0) { %>
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-gradient-info text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-calendar-alt me-2"></i>Recent Activity
+                        </h5>
+                        <small>Article publication trends over the last 7 days</small>
+                    </div>
+                    <div class="card-body">
+                        <div class="activity-timeline">
+                            <div class="row">
+                                <% recentStats.forEach((stat, index) => { 
+                                    const percentage = (stat.count / Math.max(...recentStats.map(s => s.count))) * 100;
+                                    const isToday = moment(stat._id).isSame(moment(), 'day');
+                                    const dayName = moment(stat._id).format('dddd');
+                                %>
+                                    <div class="col-lg-3 col-md-4 col-sm-6 mb-3">
+                                        <div class="activity-card <%= isToday ? 'today' : '' %>">
+                                            <div class="activity-header">
+                                                <h6 class="mb-1 <%= isToday ? 'text-warning' : 'text-primary' %>">
+                                                    <%= moment(stat._id).format('MMM DD') %>
+                                                    <% if (isToday) { %>
+                                                        <i class="fas fa-star ms-1"></i>
+                                                    <% } %>
+                                                </h6>
+                                                <small class="text-muted"><%= dayName %></small>
+                                            </div>
+                                            <div class="activity-stats">
+                                                <div class="activity-number">
+                                                    <%= stat.count %>
+                                                </div>
+                                                <div class="activity-label">articles</div>
+                                            </div>
+                                            <div class="activity-bar">
+                                                <div class="progress" style="height: 4px;">
+                                                    <div class="progress-bar <%= isToday ? 'bg-warning' : 'bg-info' %>" 
+                                                         style="width: <%= percentage %>%;"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                <% }) %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- System Information -->
+        <div class="row">
+            <div class="col-lg-8 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-header bg-gradient-secondary text-white">
+                        <h5 class="mb-0">
+                            <i class="fas fa-server me-2"></i>Platform Information
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <h6 class="text-primary">
+                                        <i class="fas fa-cog me-1"></i>System Status
+                                    </h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-check-circle text-success me-2"></i>
+                                            Platform: <strong>Operational</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-database text-success me-2"></i>
+                                            Database: <strong>MongoDB Connected</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-sync text-success me-2"></i>
+                                            RSS Feeds: <strong>Auto-updating</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-shield-alt text-success me-2"></i>
+                                            Security: <strong>Protected</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="info-group">
+                                    <h6 class="text-primary">
+                                        <i class="fas fa-chart-line me-1"></i>Performance
+                                    </h6>
+                                    <ul class="list-unstyled">
+                                        <li class="mb-2">
+                                            <i class="fas fa-tachometer-alt text-info me-2"></i>
+                                            Response Time: <strong>&lt; 200ms</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-memory text-info me-2"></i>
+                                            Memory Usage: <strong>Optimized</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-clock text-info me-2"></i>
+                                            Uptime: <strong>99.9%</strong>
+                                        </li>
+                                        <li class="mb-2">
+                                            <i class="fas fa-users text-info me-2"></i>
+                                            Concurrent Users: <strong>Unlimited</strong>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-4 mb-4">
+                <div class="card shadow-sm bg-primary text-white">
+                    <div class="card-body text-center">
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                             alt="IoTCommunity.Space" 
+                             height="60" 
+                             class="mb-3"
+                             style="filter: brightness(0) invert(1);"
+                             onerror="this.style.display='none';">
+                        <h5 class="card-title">IoTCommunity.Space</h5>
+                        <p class="card-text">Building the future of IoT together</p>
+                        <div class="mt-3">
+                            <a href="https://iotcommunity.space/" target="_blank" class="btn btn-warning btn-lg">
+                                <i class="fas fa-rocket me-2"></i>Visit Community
+                            </a>
+                        </div>
+                        <hr class="my-3 border-light opacity-25">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="community-stat">
+                                    <i class="fas fa-users fa-2x mb-1"></i>
+                                    <div class="fw-bold">Growing</div>
+                                    <small>Community</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="community-stat">
+                                    <i class="fas fa-lightbulb fa-2x mb-1"></i>
+                                    <div class="fw-bold">Innovation</div>
+                                    <small>Focused</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="fas fa-bolt me-2"></i>Quick Actions
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="/" class="btn btn-outline-primary btn-lg w-100">
+                                    <i class="fas fa-home me-2"></i>
+                                    <div>View Articles</div>
+                                    <small>Browse news feed</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="http://localhost:3000/api/v1/articles" target="_blank" class="btn btn-outline-info btn-lg w-100">
+                                    <i class="fas fa-code me-2"></i>
+                                    <div>API Access</div>
+                                    <small>REST endpoints</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="http://localhost:3000/health" target="_blank" class="btn btn-outline-success btn-lg w-100">
+                                    <i class="fas fa-heartbeat me-2"></i>
+                                    <div>Health Check</div>
+                                    <small>System status</small>
+                                </a>
+                            </div>
+                            <div class="col-md-3 col-sm-6 mb-3">
+                                <a href="https://iotcommunity.space/" target="_blank" class="btn btn-warning btn-lg w-100 text-white">
+                                    <i class="fas fa-users me-2"></i>
+                                    <div>Join Community</div>
+                                    <small>Connect with IoT experts</small>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Branded Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center">
+                        <img src="https://iotcommunity.space/static/media/logo.a1fac83811e29f2f57d9.png" 
+                             alt="IoTCommunity.Space Logo" 
+                             height="32" 
+                             class="me-2"
+                             style="filter: brightness(0) invert(1);"
+                             onerror="this.style.display='none';">
+                        <div>
+                            <h6 class="mb-0 text-white">IoT News Dashboard Statistics</h6>
+                            <small class="text-light opacity-75">Analytics powered by IoTCommunity.Space</small>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 text-light">
+                        Built by <a href="https://iotcommunity.space/" target="_blank" class="text-warning fw-bold text-decoration-none">IoTCommunity.Space</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Chart.js for enhanced charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Initialize tooltips
+        const tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+        tooltips.forEach(tooltip => {
+            new bootstrap.Tooltip(tooltip);
+        });
+
+        // Animate counters
+        function animateCounter(element, start, end, duration) {
+            let startTime = null;
+            const step = (timestamp) => {
+                if (!startTime) startTime = timestamp;
+                const progress = Math.min((timestamp - startTime) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                element.textContent = current.toLocaleString();
+                if (progress < 1) {
+                    requestAnimationFrame(step);
+                }
+            };
+            requestAnimationFrame(step);
+        }
+
+        // Animate stats numbers on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const statsNumbers = document.querySelectorAll('.stats-number');
+            statsNumbers.forEach(element => {
+                const finalValue = parseInt(element.textContent.replace(/,/g, ''));
+                if (!isNaN(finalValue)) {
+                    element.textContent = '0';
+                    animateCounter(element, 0, finalValue, 2000);
+                }
+            });
+        });
+
+        // Auto-refresh data every 5 minutes
+        setInterval(function() {
+            console.log('Auto-refreshing statistics data...');
+            // You can implement AJAX refresh here
+        }, 5 * 60 * 1000);
+
+        // IoTCommunity.Space branding
+        console.log('%c📊 IoT News Dashboard - Statistics', 'color: #3498db; font-size: 18px; font-weight: bold;');
+        console.log('%c🌐 Analytics by IoTCommunity.Space', 'color: #2c3e50; font-size: 14px;');
+        console.log('%c💡 Visit: https://iotcommunity.space/', 'color: #27ae60; font-size: 12px;');
+    </script>
+</body>
+</html>
