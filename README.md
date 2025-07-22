@@ -1,299 +1,294 @@
-# IoT News Aggregator API
+# 🌐 IoT News Aggregator & Dashboard Platform
 
-A comprehensive REST API that aggregates IoT news from multiple RSS feeds with advanced duplicate detection, image extraction, and intelligent categorization. Supports both in-memory storage (for development) and MongoDB (for production).
+**A comprehensive IoT news platform with REST API and web dashboard, featuring real-time RSS aggregation, advanced image extraction, and intelligent content management. Built by [IoTCommunity.Space](https://iotcommunity.space/).**
 
+![IoT News Dashboard](https://img.shields.io/shields.io/badge/Database-MongoDB-greenshields.io/badge/License-MIT-yellowWhat This Platform Provides**
 
-## 🚀 Features
+### **📰 For News Consumers**
+- **Beautiful Web Dashboard** - Browse IoT news with modern, responsive interface
+- **Advanced Search & Filtering** - Find articles by keywords, sources, categories, dates
+- **Real-time Updates** - Latest IoT industry news automatically aggregated
+- **Mobile-Friendly** - Optimized for all devices and screen sizes
 
-- **Multi-Source RSS Aggregation**: Fetches from 6+ premium IoT news sources
-- **Smart Duplicate Detection**: Advanced content-based deduplication with similarity algorithms
-- **Image Extraction**: Automatically extracts featured images and content images from articles
-- **Intelligent Categorization**: Rich category and tag extraction with normalization
-- **RESTful API**: Clean, paginated endpoints with filtering, search, and sorting
-- **Dual Storage Options**: In-memory (development) or MongoDB (production)
-- **Automated Scheduling**: Configurable RSS refresh intervals (default: every 15 minutes)
-- **Relevance Scoring**: Content quality and freshness scoring system
-- **Error Handling**: Robust error handling with graceful fallbacks
-- **Real-time Updates**: Live RSS feed monitoring and incremental updates
+### **🔌 For Developers**
+- **REST API** - Complete programmatic access to all news data
+- **Multiple Storage Options** - In-memory (development) or MongoDB (production)
+- **Easy Integration** - Clean, documented endpoints with JSON responses
+- **Auto-Installation** - One-command setup with dependency auto-install
 
+### **🏢 For Enterprises**
+- **Scalable Architecture** - Handle millions of articles with MongoDB
+- **Docker Deployment** - Production-ready containerization
+- **Content Management** - Edit, categorize, and manage news articles
+- **Analytics Dashboard** - Comprehensive statistics and insights
 
-## 📁 Project Structure
+## 🌟 **Key Features**
+
+### **🚀 Platform Features**
+- ✅ **Dual Interface** - Web dashboard + REST API
+- ✅ **Auto-Installation** - Automatically installs Docker, Node.js, MongoDB if missing
+- ✅ **One-Command Deployment** - `./start.sh` sets up everything
+- ✅ **IoTCommunity.Space Branding** - Professional, branded interface
+- ✅ **Light Theme Design** - Clean, modern UI with excellent readability
+
+### **📡 RSS Aggregation**
+- ✅ **6+ Premium Sources** - IoT Tech News, IoT Now, IoT Business News, AWS IoT Blog, etc.
+- ✅ **Real-time Monitoring** - Automatic updates every 15 minutes
+- ✅ **Smart Duplicate Detection** - Advanced content-based deduplication
+- ✅ **Image Extraction** - Multi-strategy image extraction from articles and websites
+- ✅ **Content Enhancement** - Automatic categorization and relevance scoring
+
+### **💾 Storage & Performance**
+- ✅ **Dual Storage** - In-memory (dev) or MongoDB (production)
+- ✅ **High Performance** - Sub-100ms API responses
+- ✅ **Data Persistence** - Automatic backups and recovery
+- ✅ **Scalable Design** - Handle unlimited articles with MongoDB
+
+### **🔧 Management Features**
+- ✅ **CRUD Operations** - Create, read, update, delete articles via dashboard
+- ✅ **Advanced Search** - Full-text search with filtering options
+- ✅ **Statistics Dashboard** - Comprehensive analytics and insights
+- ✅ **Error Handling** - Robust error management with user-friendly messages
+
+## 🏗️ **Architecture Overview**
 
 ```
-IOT-NEWS/
-├── models/                        # Database models (MongoDB version)
-│   └── Article.js                 # Mongoose article schema with validation
-├── routes/                        # API route handlers
-│   └── articles.js                # All article-related REST endpoints
-├── services/                      # Core business logic services
-│   ├── rssParser.js              # RSS feed parsing and normalization
-│   ├── duplicateDetector.js      # Duplicate detection algorithms
-│   ├── imageExtractor.js         # Image extraction and processing
-│   ├── memoryDatabase.js         # In-memory database service
-│   ├── databaseService.js        # MongoDB database service
-│   └── scheduler.js              # RSS fetching scheduler with cron
-├── .env                          # Environment configuration
-├── .gitignore                    # Git ignore rules
-├── Ins.md                        # Installation instructions
-├── package.json                  # Dependencies and npm scripts
-├── package-lock.json            # Dependency lock file
-├── server.js                     # Main application entry point
-└── README.md                     # This documentation
+IoT News Platform
+├── 📱 Web Dashboard (Port 4000)
+│   ├── Article Management (CRUD)
+│   ├── Search & Filtering
+│   ├── Statistics & Analytics
+│   └── IoTCommunity.Space Branding
+│
+├── 🔌 REST API (Port 3000)
+│   ├── Articles Endpoints
+│   ├── Source Statistics
+│   ├── Category Analytics
+│   └── System Health
+│
+├── 🗄️ Database Layer
+│   ├── MongoDB (Production)
+│   └── In-Memory (Development)
+│
+├── 📡 RSS Processing Engine
+│   ├── Multi-source Aggregation
+│   ├── Duplicate Detection
+│   ├── Image Extraction
+│   └── Content Enhancement
+│
+└── 🐳 Docker Infrastructure
+    ├── Web Dashboard Container
+    ├── API Container
+    ├── MongoDB Container
+    └── MongoDB Admin Interface
 ```
 
+## 📁 **Project Structure**
 
-## 🔧 Detailed File Descriptions
+```
+IoT-News-Aggregator-API/
+├── 📱 dashboard/                  # Web Dashboard Application
+│   ├── views/                    # EJS Templates
+│   │   ├── home.ejs             # Article grid with search
+│   │   ├── article.ejs          # Article view page
+│   │   ├── edit.ejs             # Article editing form
+│   │   ├── stats.ejs            # Analytics dashboard
+│   │   └── error.ejs            # Error handling page
+│   ├── public/css/              # Stylesheets
+│   │   └── style.css            # Light theme styling
+│   ├── package.json             # Dashboard dependencies
+│   ├── Dockerfile               # Dashboard container
+│   └── app.js                   # Dashboard server
+│
+├── 🔌 routes/                    # API Routes
+│   └── articles.js              # REST endpoints
+│
+├── 🧠 services/                  # Core Business Logic
+│   ├── rssParser.js             # Enhanced RSS processing
+│   ├── enhancedImageExtractor.js # Multi-strategy image extraction
+│   ├── duplicateDetector.js     # Content deduplication
+│   ├── memoryDatabase.js        # In-memory storage
+│   ├── databaseService.js       # MongoDB operations
+│   └── scheduler.js             # Automated RSS fetching
+│
+├── 🗄️ models/                   # Database Models
+│   └── Article.js               # Mongoose schema
+│
+├── 🐳 docker/                   # Docker Configuration
+│   └── mongo-init.js            # MongoDB initialization
+│
+├── 📊 logs/                     # Application Logs
+│
+├── 🔧 Configuration Files
+│   ├── docker-compose.yml       # Multi-container setup
+│   ├── package.json             # API dependencies
+│   ├── .env                     # Environment variables
+│   └── .gitignore               # Git ignore rules
+│
+├── 🚀 Deployment Scripts
+│   ├── start.sh                 # Auto-install & start script
+│   └── test-docker.sh           # Docker testing script
+│
+└── 📚 Documentation
+    ├── README.md                # This comprehensive guide
+    └── README-DOCKER.md         # Docker-specific instructions
+```
 
-### **Core Application Files**
+## ⚡ **Quick Start (One Command)**
 
-#### **`server.js`** - Main Application Server
-
-- Express.js server setup and configuration
-- Middleware mounting (CORS, Helmet, JSON parsing)
-- Database connection handling (MongoDB or In-Memory)
-- Route mounting and error handling
-- Graceful shutdown handling
-- Health check endpoint implementation
-
-
-#### **`.env`** - Environment Configuration
-
-- RSS feed URLs configuration
-- Database connection settings
-- API configuration (pagination limits, versions)
-- Caching and scheduling parameters
-- Feature flags and development settings
-
-
-### **API Routes**
-
-#### **`routes/articles.js`** - REST API Endpoints
-
-- **GET** `/api/v1/articles` - Paginated articles with filtering
-- **GET** `/api/v1/articles/sources` - Source statistics and metadata
-- **GET** `/api/v1/articles/categories` - Category analytics
-- **GET** `/api/v1/articles/stats` - System performance statistics
-- **POST** `/api/v1/articles/refresh` - Manual RSS feed refresh
-- Request validation and response formatting
-- Error handling and status code management
-
-
-### **Business Logic Services**
-
-#### **`services/rssParser.js`** - RSS Processing Engine
-
-- Multi-format RSS/XML parsing (RSS 2.0, Atom)
-- Content normalization across different feed structures
-- HTML content extraction and cleaning
-- Source-specific parsing optimizations
-- Author name normalization
-- Publication date standardization
-- Category and tag extraction
-- Relevance score calculation
-
-
-#### **`services/duplicateDetector.js`** - Advanced Deduplication
-
-- Content-based hashing algorithms
-- Levenshtein distance calculations for similarity
-- Title similarity matching with configurable thresholds
-- Time-based duplicate detection (24-hour windows)
-- Cross-source duplicate identification
-- Duplicate grouping and management
-- Performance optimization for large datasets
-
-
-#### **`services/imageExtractor.js`** - Image Processing
-
-- Multi-source image extraction strategies
-- WordPress featured image detection
-- HTML content image parsing with Cheerio
-- Image URL validation and normalization
-- Alt-text and caption extraction
-- Source-specific image extraction rules
-- Image metadata processing (dimensions, formats)
-
-
-#### **`services/memoryDatabase.js`** - In-Memory Storage (Development)
-
-- High-performance in-memory article storage using Maps
-- File-based persistence for data recovery
-- Memory usage optimization and cleanup
-- Efficient indexing for fast queries
-- Pagination and filtering implementation
-- Statistics calculation and aggregation
-- Automatic backup and restore functionality
-
-
-#### **`services/databaseService.js`** - MongoDB Operations (Production)
-
-- Mongoose ODM integration
-- Complex aggregation queries for analytics
-- Index optimization for performance
-- Transaction handling for data consistency
-- Connection pooling and error recovery
-- Bulk operations for efficient data processing
-
-
-#### **`services/scheduler.js`** - Automated RSS Fetching
-
-- Cron-based RSS feed scheduling
-- Multi-source parallel fetching
-- Error handling and retry logic
-- Performance monitoring and statistics
-- Graceful error recovery
-- Memory management during bulk operations
-- Rate limiting and throttling
-
-
-### **Database Models**
-
-#### **`models/Article.js`** - MongoDB Article Schema
-
-- Comprehensive article data structure
-- Field validation and constraints
-- Database indexes for query optimization
-- Pre-save middleware for data processing
-- Content hashing for duplicate detection
-- Relationship definitions and population
-- Custom validation methods
-
-
-### **Generated Files**
-
-#### **`data/articles.json`** - Persistence File
-
-- Auto-generated JSON storage for in-memory mode
-- Structured article data with metadata
-- Backup and recovery information
-- Last update timestamps
-- Article count statistics
-
-
-## 📋 Prerequisites
-
-- **Node.js** >= 16.0.0
-- **npm** >= 7.0.0
-- **MongoDB** >= 4.4 (for production mode only)
-- **Internet connection** for RSS feed fetching
-
-
-## ⚡ Installation \& Setup
-
-### 1. Clone Repository
+### **🎯 Instant Setup (Recommended)**
 
 ```bash
-git clone <your-repository-url>
-cd IOT-NEWS
+# Clone the repository
+git clone https://github.com/iotcommunity-space/IoT-News-Aggregator-API.git
+cd IoT-News-Aggregator-API
+
+# Auto-install everything and start (one command!)
+./start.sh
 ```
 
+**What this does:**
+- ✅ **Auto-detects your OS** (Ubuntu, CentOS, Fedora, etc.)
+- ✅ **Installs Docker** if missing
+- ✅ **Installs Docker Compose** if missing  
+- ✅ **Installs Node.js & npm** if missing
+- ✅ **Builds and starts all containers**
+- ✅ **Performs health checks**
+- ✅ **Shows you all access URLs**
 
-### 2. Install Dependencies
+### **🌐 Access Your Platform**
+
+After successful setup, access:
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **📱 Web Dashboard** | http://localhost:4000 | Browse, search, edit articles |
+| **🔌 REST API** | http://localhost:3000 | Programmatic access |
+| **📊 API Health** | http://localhost:3000/health | System status |
+| **🗄️ MongoDB Admin** | http://localhost:8081 | Database management |
+
+**Default MongoDB Admin:** `admin` / `password123`
+
+## 🖥️ **Manual Installation (Alternative)**
+
+### **📋 Prerequisites**
+
+- **Docker** >= 20.0
+- **Docker Compose** >= 2.0  
+- **Node.js** >= 16.0 (for local development)
+- **Git** (for cloning)
+
+### **🔧 Step-by-Step Setup**
 
 ```bash
-npm install
+# 1. Clone repository
+git clone https://github.com/iotcommunity-space/IoT-News-Aggregator-API.git
+cd IoT-News-Aggregator-API
+
+# 2. Install Docker (if needed)
+# Ubuntu/Debian:
+curl -fsSL https://get.docker.com -o get-docker.sh
+sudo sh get-docker.sh
+
+# 3. Install Docker Compose (if needed)
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+# 4. Start the platform
+docker-compose up --build -d
+
+# 5. Wait for startup (about 45 seconds)
+sleep 45
+
+# 6. Check status
+docker-compose ps
 ```
 
-
-### 3. Environment Configuration
-
-Create and configure your environment file:
+### **🧪 Verify Installation**
 
 ```bash
-# Copy environment template
-cp .env.example .env
+# Test API
+curl http://localhost:3000/health
+
+# Test Dashboard  
+curl http://localhost:4000/health
+
+# Check article count
+curl "http://localhost:3000/api/v1/articles?limit=1"
 ```
 
-Edit `.env` with your configuration:
+## 📱 **Web Dashboard Guide**
 
-```env
-# Server Configuration
-PORT=3000
-NODE_ENV=development
+### **🏠 Homepage Features**
 
-# RSS Feed URLs (6 premium IoT sources)
-RSS_FEEDS=https://iottechnews.com/feed/,https://www.iot-now.com/feed/,https://iotbusinessnews.com/feed/,https://www.iotinsider.com/category/news/feed/,https://aws.amazon.com/blogs/iot/feed/,https://connectedworld.com/feed/
+- **📊 Statistics Overview** - Total articles, sources, categories
+- **🔍 Advanced Search** - Keywords, sources, categories, date ranges
+- **📰 Article Grid** - Responsive cards with images and metadata
+- **🏷️ Category Filtering** - Quick category-based filtering
+- **📄 Pagination** - Navigate through large article collections
 
-# Database Configuration (MongoDB - Production Only)
-MONGODB_URI=mongodb://localhost:27017/iot-news-api
+### **📝 Article Management**
 
-# API Configuration
-API_VERSION=v1
-MAX_ARTICLES_PER_PAGE=50
-DEFAULT_ARTICLES_PER_PAGE=20
+#### **👀 View Articles**
+- **Full Content Display** - Complete article with images
+- **Source Attribution** - Links to original sources
+- **Metadata Display** - Author, publication date, categories
+- **Social Sharing** - Share to Twitter, LinkedIn
+- **Print-Friendly** - Optimized for printing
 
-# Caching and Scheduling
-CACHE_TTL=300
-RSS_FETCH_INTERVAL=*/15 * * * *
+#### **✏️ Edit Articles**
+- **Rich Text Editing** - Modify title, content, excerpt
+- **Category Management** - Add/remove categories and tags
+- **Author Information** - Update author details
+- **Image Management** - Featured image and gallery
+- **Preview Mode** - Preview changes before saving
 
-# Memory Database Settings (Development)
-MAX_ARTICLES_IN_MEMORY=10000
-AUTO_SAVE_INTERVAL=300000
-DATA_PERSISTENCE_ENABLED=true
+#### **🗑️ Delete Articles**
+- **Confirmation Modal** - Prevent accidental deletions
+- **Batch Operations** - Delete multiple articles
+- **Soft Delete Option** - Mark as inactive instead of permanent deletion
+
+### **📊 Analytics Dashboard**
+
+- **📈 Article Trends** - Publication trends over time
+- **🏢 Source Statistics** - Articles per source with activity
+- **🏷️ Category Distribution** - Popular topics and tags
+- **🔍 Search Analytics** - Popular search terms
+- **⚡ System Performance** - Response times and health metrics
+
+## 🔌 **REST API Documentation**
+
+### **🌐 Base URL**
+```
+http://localhost:3000/api/v1
 ```
 
+### **📰 Articles Endpoints**
 
-### 4. Choose Your Storage Mode
-
-#### **Option A: Development Mode (In-Memory Storage)**
-
-```bash
-# No database required - runs immediately
-npm run dev
-```
-
-
-#### **Option B: Production Mode (MongoDB)**
-
-```bash
-# Start MongoDB service
-mongod
-
-# Run with MongoDB
-npm start
-```
-
-
-## 🌐 API Endpoints
-
-### **Base URL**: `http://localhost:3000/api/v1`
-
-### **Articles Endpoints**
-
-#### **GET** `/articles` - Get Articles
-
-Retrieve paginated articles with filtering and search capabilities.
+#### **GET** `/articles` - List Articles
+Retrieve paginated articles with advanced filtering.
 
 **Query Parameters:**
+```javascript
+{
+  page: 1,                    // Page number (default: 1)
+  limit: 20,                  // Items per page (max: 50)
+  search: "artificial intelligence", // Search keywords
+  source: "iottechnews.com",  // Filter by source domain
+  category: "AI",             // Filter by category
+  author: "John Smith",       // Filter by author
+  start_date: "2025-07-01",   // Articles after date
+  end_date: "2025-07-31",     // Articles before date
+  include_duplicates: false   // Include duplicate articles
+}
+```
 
-- `page` (integer, default: 1) - Page number
-- `limit` (integer, default: 20, max: 50) - Items per page
-- `source` (string) - Filter by source domain
-- `category` (string) - Filter by category name
-- `author` (string) - Filter by author name
-- `search` (string) - Search in title, excerpt, and categories
-- `start_date` (date) - Filter articles after this date
-- `end_date` (date) - Filter articles before this date
-- `include_duplicates` (boolean, default: false) - Include duplicate articles
-
-**Example Requests:**
-
+**Example Request:**
 ```bash
-# Get latest 5 articles
-curl "http://localhost:3000/api/v1/articles?limit=5"
-
-# Search for AI-related articles
-curl "http://localhost:3000/api/v1/articles?search=artificial%20intelligence&limit=10"
-
-# Filter by source and category
-curl "http://localhost:3000/api/v1/articles?source=iottechnews.com&category=Security"
-
-# Date range filtering
-curl "http://localhost:3000/api/v1/articles?start_date=2025-07-01&end_date=2025-07-20"
+curl "http://localhost:3000/api/v1/articles?search=security&limit=5&source=iottechnews.com"
 ```
 
 **Response Format:**
-
 ```json
 {
   "success": true,
@@ -311,7 +306,7 @@ curl "http://localhost:3000/api/v1/articles?start_date=2025-07-01&end_date=2025-
         "author": "John Smith",
         "publishedAt": "2025-07-20T14:30:00.000Z",
         "excerpt": "Revolutionary security protocol for IoT devices...",
-        "content": "<p>Full HTML content...</p>",
+        "content": "Full HTML content...",
         "featuredImage": {
           "url": "https://cdn.example.com/image.jpg",
           "alt": "Security diagram",
@@ -319,7 +314,7 @@ curl "http://localhost:3000/api/v1/articles?start_date=2025-07-01&end_date=2025-
         },
         "images": [
           {
-            "url": "https://cdn.example.com/diagram.png",
+            "url": "https://cdn.example.com/diagram.png", 
             "alt": "Technical diagram",
             "caption": "System overview"
           }
@@ -335,7 +330,7 @@ curl "http://localhost:3000/api/v1/articles?start_date=2025-07-01&end_date=2025-
     ],
     "meta": {
       "total": 1547,
-      "page": 1,
+      "page": 1, 
       "pages": 78,
       "per_page": 20,
       "sources": 6,
@@ -345,19 +340,15 @@ curl "http://localhost:3000/api/v1/articles?start_date=2025-07-01&end_date=2025-
 }
 ```
 
-
-#### **GET** `/articles/sources` - Get Source Statistics
-
-Retrieve information about all RSS sources and their activity.
+#### **GET** `/articles/sources` - Source Statistics
+Get activity statistics for all RSS sources.
 
 **Example Request:**
-
 ```bash
 curl "http://localhost:3000/api/v1/articles/sources"
 ```
 
-**Response Format:**
-
+**Response:**
 ```json
 {
   "success": true,
@@ -365,14 +356,14 @@ curl "http://localhost:3000/api/v1/articles/sources"
     "sources": [
       {
         "_id": "iottechnews.com",
-        "name": "IoT Tech News",
+        "name": "IoT Tech News", 
         "count": 245,
         "latestArticle": "2025-07-20T14:30:00.000Z"
       },
       {
         "_id": "iot-now.com",
         "name": "IoT Now",
-        "count": 189,
+        "count": 189, 
         "latestArticle": "2025-07-20T13:45:00.000Z"
       }
     ],
@@ -381,136 +372,27 @@ curl "http://localhost:3000/api/v1/articles/sources"
 }
 ```
 
+#### **GET** `/articles/categories` - Category Analytics
+Get category distribution and popularity.
 
-#### **GET** `/articles/categories` - Get Category Statistics
+#### **GET** `/articles/stats` - System Statistics
+Comprehensive system health and performance metrics.
 
-Retrieve category distribution and analytics.
+#### **POST** `/articles/refresh` - Manual Refresh
+Trigger immediate RSS feed refresh.
 
-**Example Request:**
-
-```bash
-curl "http://localhost:3000/api/v1/articles/categories"
-```
-
-**Response Format:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "categories": [
-      {
-        "_id": "IoT Security",
-        "count": 67
-      },
-      {
-        "_id": "Artificial Intelligence",
-        "count": 54
-      },
-      {
-        "_id": "Connected Devices",
-        "count": 43
-      }
-    ],
-    "total": 85
-  }
-}
-```
-
-
-#### **GET** `/articles/stats` - Get System Statistics
-
-Retrieve comprehensive system performance and health metrics.
-
-**Example Request:**
-
-```bash
-curl "http://localhost:3000/api/v1/articles/stats"
-```
-
-**Response Format:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "scheduler": {
-      "totalRuns": 156,
-      "successfulRuns": 154,
-      "errors": 2,
-      "articlesProcessed": 2847,
-      "isRunning": false,
-      "lastRun": "2025-07-20T14:45:00.000Z",
-      "uptime": 3847.2,
-      "articlesInMemory": 1547,
-      "memoryUsage": {
-        "rss": 89792512,
-        "heapTotal": 50970624,
-        "heapUsed": 30906600
-      }
-    },
-    "sources": {
-      "total": 6,
-      "active": 6
-    },
-    "categories": {
-      "total": 85,
-      "top": [
-        {"_id": "IoT Security", "count": 67},
-        {"_id": "AI", "count": 54}
-      ]
-    }
-  }
-}
-```
-
-
-#### **POST** `/articles/refresh` - Manual RSS Refresh
-
-Trigger an immediate RSS feed refresh across all sources.
-
-**Example Request:**
-
-```bash
-curl -X POST "http://localhost:3000/api/v1/articles/refresh"
-```
-
-**Response Format:**
-
-```json
-{
-  "success": true,
-  "data": {
-    "message": "RSS feeds refreshed successfully",
-    "result": {
-      "saved": 15,
-      "updated": 3,
-      "skipped": 47,
-      "totalProcessed": 65
-    }
-  }
-}
-```
-
-
-### **System Endpoints**
+### **🔍 System Endpoints**
 
 #### **GET** `/health` - Health Check
-
-Check API health and system status.
-
-**Example Request:**
-
 ```bash
 curl "http://localhost:3000/health"
 ```
 
-**Response Format:**
-
+**Response:**
 ```json
 {
   "status": "healthy",
-  "storage": "in-memory",
+  "storage": "mongodb",
   "timestamp": "2025-07-20T15:00:00.000Z",
   "uptime": 3847.2,
   "memory": {
@@ -521,342 +403,478 @@ curl "http://localhost:3000/health"
   "scheduler": {
     "isRunning": false,
     "lastRun": "2025-07-20T14:45:00.000Z",
-    "totalRuns": 156,
-    "articlesInMemory": 1547
+    "totalRuns": 156
   }
 }
 ```
 
+## 🗂️ **Storage Configuration**
 
-#### **GET** `/` - API Information
+### **💾 Development Mode (In-Memory)**
 
-Get API metadata and available endpoints.
+Perfect for quick testing and development.
 
-**Example Request:**
-
-```bash
-curl "http://localhost:3000/"
-```
-
-
-## 🗄️ Storage Options
-
-### **In-Memory Storage (Development)**
-
-**Advantages:**
-
-- ✅ **Zero Setup** - No database installation required
-- ✅ **Fast Performance** - Sub-millisecond queries
+**Features:**
+- ✅ **Zero Setup** - No database installation needed
+- ✅ **Lightning Fast** - Sub-millisecond queries  
 - ✅ **File Persistence** - Data survives restarts
-- ✅ **Perfect for Development** - Quick testing and iteration
+- ✅ **Automatic Backups** - Saves to `./data/articles.json`
 
 **Configuration:**
-
-```env
-# Automatically enabled when MongoDB is not configured
-MAX_ARTICLES_IN_MEMORY=10000
-DATA_PERSISTENCE_ENABLED=true
-```
-
-**Data Persistence:**
-
-- Articles saved to `./data/articles.json`
-- Automatic backups on updates
-- Graceful shutdown handling
-
-
-### **MongoDB Storage (Production)**
-
-**Advantages:**
-
-- ✅ **Scalable** - Handle millions of articles
-- ✅ **ACID Compliance** - Data consistency guarantees
-- ✅ **Advanced Querying** - Complex aggregations
-- ✅ **Clustering Support** - High availability
-- ✅ **Backup \& Recovery** - Enterprise-grade data protection
-
-**Configuration:**
-
-```env
-MONGODB_URI=mongodb://localhost:27017/iot-news-api
-# Or for MongoDB Atlas:
-# MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/iot-news-api
-```
-
-**Setup MongoDB:**
-
 ```bash
-# Local MongoDB
-mongod --dbpath /path/to/data
-
-# Or using Docker
-docker run -d -p 27017:27017 --name mongodb mongo:latest
-```
-
-
-## ⚙️ Configuration Guide
-
-### **RSS Feed Sources**
-
-Current supported premium IoT sources:
-
-- **IoT Tech News** - Latest IoT technology news
-- **IoT Now** - Enterprise IoT insights
-- **IoT Business News** - Business-focused IoT content
-- **IoT Insider** - Industry insider perspectives
-- **AWS IoT Blog** - Cloud IoT solutions and tutorials
-- **Connected World** - IoT ecosystem coverage
-
-
-### **Scheduling Configuration**
-
-```env
-# Cron pattern for RSS fetching (default: every 15 minutes)
-RSS_FETCH_INTERVAL=*/15 * * * *
-
-# Other examples:
-# RSS_FETCH_INTERVAL=0 */2 * * *    # Every 2 hours
-# RSS_FETCH_INTERVAL=0 9 * * *      # Daily at 9 AM
-# RSS_FETCH_INTERVAL=*/5 * * * *     # Every 5 minutes
-```
-
-
-### **Performance Tuning**
-
-```env
-# Memory limits
-MAX_ARTICLES_IN_MEMORY=10000
-MAX_ARTICLES_PER_PAGE=50
-
-# Caching
-CACHE_TTL=300  # 5 minutes
-
-# Auto-save interval (milliseconds)
-AUTO_SAVE_INTERVAL=300000  # 5 minutes
-```
-
-
-## 🔄 Development Workflow
-
-### **Available NPM Scripts**
-
-```bash
-# Development with auto-reload
+# Automatically used when MongoDB is not available
+# No additional setup required
 npm run dev
-
-# Production mode
-npm start
-
-# Setup project (install dependencies)
-npm run setup
-
-# Run tests
-npm test
 ```
 
+### **🏢 Production Mode (MongoDB)**
 
-### **Development Mode Features**
+Scalable solution for production deployments.
 
-- **Hot Reloading** - Automatic server restart on file changes
-- **In-Memory Storage** - No database setup required
-- **Detailed Logging** - Comprehensive debug information
-- **File Persistence** - Data survives restarts
+**Features:**
+- ✅ **Unlimited Scale** - Handle millions of articles
+- ✅ **ACID Compliance** - Data consistency guarantees
+- ✅ **Advanced Queries** - Complex aggregations and analytics
+- ✅ **High Availability** - Clustering and replication support
+- ✅ **Enterprise Security** - Authentication and encryption
 
+**Configuration:**
+```yaml
+# docker-compose.yml automatically sets up:
+# - MongoDB 4.4 (AVX-compatible)
+# - MongoDB Express admin interface
+# - Optimized indexes and schema
+# - Automatic health checks
+```
 
-### **Adding New RSS Feeds**
+## 📡 **RSS Sources**
 
-1. **Update Environment:**
+### **🌐 Current Premium Sources**
+
+| Source | Focus Area | Update Frequency |
+|--------|------------|------------------|
+| **IoT Tech News** | Latest technology developments | Multiple daily |
+| **IoT Now** | Enterprise IoT solutions | Daily |
+| **IoT Business News** | Business and market insights | Daily |
+| **IoT Insider** | Industry analysis | Multiple daily |
+| **AWS IoT Blog** | Cloud IoT tutorials | Weekly |
+| **Connected World** | IoT ecosystem coverage | Daily |
+
+### **➕ Adding New Sources**
+
+1. **Update Environment Variables:**
 ```env
-RSS_FEEDS=existing-feeds,https://new-feed.com/rss
+RSS_FEEDS=existing-feeds,https://new-source.com/feed/
 ```
 
-2. **Test Feed Format:**
+2. **Restart Services:**
 ```bash
-# Manual refresh to test new feed
+docker-compose restart
+```
+
+3. **Verify Feed:**
+```bash
 curl -X POST "http://localhost:3000/api/v1/articles/refresh"
 ```
 
-3. **Monitor Performance:**
-```bash
-# Check system stats after adding feeds
-curl "http://localhost:3000/api/v1/articles/stats"
-```
+## 🔧 **Configuration Options**
 
+### **📝 Environment Variables**
 
-## 🚨 Error Handling
-
-### **Common Issues \& Solutions**
-
-#### **RSS Feed Timeouts**
-
-```
-Error parsing RSS feed: connect ETIMEDOUT
-```
-
-**Solution:** Feed temporarily unavailable - API continues with other sources
-
-#### **Memory Limits**
-
-```
-Articles in memory: 10,000 (limit reached)
-```
-
-**Solution:** Automatic cleanup removes oldest articles
-
-#### **Invalid RSS Format**
-
-```
-Error normalizing RSS item: Missing required fields
-```
-
-**Solution:** Invalid articles are skipped, processing continues
-
-### **Error Response Format**
-
-```json
-{
-  "success": false,
-  "error": "Error type",
-  "message": "Detailed error description"
-}
-```
-
-
-## 📈 Performance Metrics
-
-### **Typical Performance**
-
-- **RSS Fetch Speed:** 3-8 seconds for 6 sources
-- **API Response Time:** < 100ms for paginated results
-- **Memory Usage:** ~80MB for 1,000 articles
-- **Throughput:** 1000+ requests/minute
-
-
-### **Scalability Limits**
-
-| Storage | Max Articles | Max Sources | Response Time |
-| :-- | :-- | :-- | :-- |
-| **In-Memory** | 10,000 | 15 feeds | < 50ms |
-| **MongoDB** | Unlimited | Unlimited | < 200ms |
-
-## 🔒 Security Features
-
-- **Input Validation** - All parameters validated
-- **SQL Injection Protection** - Parameterized queries
-- **CORS Configuration** - Configurable cross-origin policies
-- **Rate Limiting Ready** - Easy to add rate limiting
-- **Secure Headers** - Helmet.js security headers
-- **Environment Isolation** - Sensitive data in environment variables
-
-
-## 🚀 Production Deployment
-
-### **Environment Setup**
+Create `.env` file for custom configuration:
 
 ```env
+# === Server Configuration ===
+PORT=3000
 NODE_ENV=production
-PORT=8080
-MONGODB_URI=mongodb+srv://production-cluster/iot-news
+API_VERSION=v1
+
+# === RSS Feed Sources ===
+RSS_FEEDS=https://iottechnews.com/feed/,https://www.iot-now.com/feed/,https://iotbusinessnews.com/feed/,https://www.iotinsider.com/category/news/feed/,https://aws.amazon.com/blogs/iot/feed/,https://connectedworld.com/feed/
+
+# === Database Configuration ===
+MONGODB_URI=mongodb://mongodb:27017/iot_news_api
+
+# === API Pagination ===
+MAX_ARTICLES_PER_PAGE=50
+DEFAULT_ARTICLES_PER_PAGE=20
+
+# === Performance Settings ===
+CACHE_TTL=300
+RSS_FETCH_INTERVAL=*/15 * * * *
+
+# === Dashboard Configuration ===
+DASHBOARD_PORT=4000
+
+# === Memory Storage (Development) ===
+MAX_ARTICLES_IN_MEMORY=10000
+AUTO_SAVE_INTERVAL=300000
+DATA_PERSISTENCE_ENABLED=true
 ```
 
+### **⏰ Scheduling Options**
 
-### **Process Management**
+```env
+# Every 15 minutes (default)
+RSS_FETCH_INTERVAL=*/15 * * * *
 
-```bash
-# Using PM2
-npm install -g pm2
-pm2 start server.js --name "iot-news-api"
-pm2 startup
-pm2 save
+# Every hour at minute 0
+RSS_FETCH_INTERVAL=0 * * * *
 
-# Using Docker
-docker build -t iot-news-api .
-docker run -p 8080:8080 -e NODE_ENV=production iot-news-api
+# Twice daily at 9 AM and 6 PM
+RSS_FETCH_INTERVAL=0 9,18 * * *
+
+# Every 5 minutes (for testing)
+RSS_FETCH_INTERVAL=*/5 * * * *
 ```
 
+## 🐳 **Docker Deployment**
 
-### **Monitoring**
-
-- Health check endpoint: `/health`
-- System statistics: `/api/v1/articles/stats`
-- Error logging and alerting
-- Performance metrics collection
-
-
-## 🧪 Testing
-
-### **Manual Testing Examples**
+### **🚀 Production Deployment**
 
 ```bash
-# Test basic functionality
-curl "http://localhost:3000/api/v1/articles?limit=1"
+# Clone repository
+git clone https://github.com/iotcommunity-space/IoT-News-Aggregator-API.git
+cd IoT-News-Aggregator-API
+
+# Production environment
+export NODE_ENV=production
+
+# Start with production settings
+docker-compose up -d
+
+# Scale dashboard service (if needed)
+docker-compose up -d --scale iot-news-dashboard=3
+```
+
+### **📊 Service Management**
+
+```bash
+# View service status
+docker-compose ps
+
+# View logs
+docker-compose logs -f
+
+# View specific service logs
+docker-compose logs -f iot-news-api
+docker-compose logs -f iot-news-dashboard
+
+# Restart services
+docker-compose restart
+
+# Update and restart
+docker-compose down
+git pull
+docker-compose up --build -d
+
+# Scale services
+docker-compose up -d --scale iot-news-dashboard=2
+```
+
+### **🔍 Health Monitoring**
+
+```bash
+# Check all services
+docker-compose ps
+
+# API health check
+curl http://localhost:3000/health
+
+# Dashboard health check  
+curl http://localhost:4000/health
+
+# MongoDB health check
+curl http://localhost:8081
+
+# Container resource usage
+docker stats
+```
+
+## 📈 **Performance & Scaling**
+
+### **🎯 Performance Metrics**
+
+| Metric | In-Memory | MongoDB |
+|--------|-----------|---------|
+| **API Response Time** | > .gitignore
+
+# 3. Enable MongoDB authentication
+# In production, configure MongoDB with authentication:
+MONGODB_URI=mongodb://username:password@mongodb:27017/iot_news_api
+
+# 4. Use HTTPS in production
+# Configure reverse proxy (nginx) with SSL certificates
+
+# 5. Regular updates
+docker-compose pull  # Update images
+git pull            # Update code
+```
+
+## 🧪 **Testing & Debugging**
+
+### **🔧 Development Testing**
+
+```bash
+# Start in development mode
+npm run dev
+
+# Test API endpoints
+curl "http://localhost:3000/api/v1/articles?limit=5"
+curl "http://localhost:3000/health"
 
 # Test search functionality
-curl "http://localhost:3000/api/v1/articles?search=security"
+curl "http://localhost:3000/api/v1/articles?search=IoT&category=Security"
 
-# Test filtering
-curl "http://localhost:3000/api/v1/articles?category=AI&source=iottechnews.com"
-
-# Test system health
-curl "http://localhost:3000/health"
+# Manual RSS refresh
+curl -X POST "http://localhost:3000/api/v1/articles/refresh"
 ```
 
+### **🐛 Debugging Commands**
 
-### **Load Testing**
+```bash
+# View container logs
+docker-compose logs -f iot-news-api
+docker-compose logs -f iot-news-dashboard
+
+# Access container shell
+docker-compose exec iot-news-api bash
+docker-compose exec iot-news-dashboard bash
+
+# MongoDB shell access
+docker-compose exec mongodb mongo
+
+# Check container resources
+docker stats
+
+# Restart specific service
+docker-compose restart iot-news-api
+```
+
+### **📊 Load Testing**
 
 ```bash
 # Install Apache Bench
-apt-get install apache2-utils
+sudo apt-get install apache2-utils
 
-# Test API performance
+# Test API performance (1000 requests, 10 concurrent)
 ab -n 1000 -c 10 http://localhost:3000/api/v1/articles
+
+# Test dashboard performance
+ab -n 500 -c 5 http://localhost:4000/
+
+# Test with search parameters
+ab -n 100 -c 10 "http://localhost:3000/api/v1/articles?search=IoT&limit=20"
 ```
 
+## 🚨 **Troubleshooting Guide**
 
-## 🤝 Contributing
+### **🔍 Common Issues**
 
-### **Development Setup**
+#### **Port Already in Use**
+```bash
+# Error: Port 3000/4000 already in use
+sudo lsof -i :3000
+sudo lsof -i :4000
 
-1. Fork the repository
-2. Create feature branch: `git checkout -b feature-name`
-3. Install dependencies: `npm install`
-4. Start development server: `npm run dev`
-5. Make changes and test
-6. Submit pull request
+# Kill processes using ports
+sudo kill -9 $(sudo lsof -t -i:3000)
+sudo kill -9 $(sudo lsof -t -i:4000)
 
-### **Code Standards**
+# Or use different ports
+export PORT=3001
+export DASHBOARD_PORT=4001
+```
 
-- **ES6+ JavaScript** with modern syntax
-- **Async/Await** for asynchronous operations
-- **Error Handling** for all external calls
-- **JSDoc Comments** for complex functions
-- **Consistent Formatting** with Prettier
+#### **Docker Permission Issues**
+```bash
+# Add user to docker group
+sudo usermod -aG docker $USER
+
+# Apply group changes
+newgrp docker
+
+# Or run with sudo
+sudo docker-compose up -d
+```
+
+#### **MongoDB Connection Issues**
+```bash
+# Check MongoDB container
+docker-compose logs mongodb
+
+# Restart MongoDB
+docker-compose restart mongodb
+
+# Check network connectivity
+docker-compose exec iot-news-api ping mongodb
+```
+
+#### **RSS Feed Timeouts**
+```bash
+# Check RSS feed accessibility
+curl -I https://iottechnews.com/feed/
+
+# View RSS parser logs
+docker-compose logs iot-news-api | grep "RSS"
+
+# Test manual refresh
+curl -X POST "http://localhost:3000/api/v1/articles/refresh"
+```
+
+### **🔧 Recovery Commands**
+
+```bash
+# Complete reset (removes all data)
+docker-compose down -v
+docker system prune -a
+./start.sh
+
+# Restart services only
+docker-compose restart
+
+# Rebuild containers
+docker-compose down
+docker-compose up --build -d
+
+# Reset MongoDB data only
+docker-compose down
+docker volume rm $(docker volume ls -q | grep mongodb)
+docker-compose up -d
+```
+
+## 🤝 **Contributing**
+
+### **🛠️ Development Setup**
+
+```bash
+# 1. Fork the repository on GitHub
+# 2. Clone your fork
+git clone https://github.com/YOUR-USERNAME/IoT-News-Aggregator-API.git
+cd IoT-News-Aggregator-API
+
+# 3. Create feature branch
+git checkout -b feature-your-feature-name
+
+# 4. Install dependencies
+npm install
+cd dashboard && npm install && cd ..
+
+# 5. Start development servers
+npm run dev  # API server
+cd dashboard && npm run dev  # Dashboard server
+
+# 6. Make changes and test
+# 7. Commit and push
+git add .
+git commit -m "feat: your feature description"
+git push origin feature-your-feature-name
+
+# 8. Create Pull Request on GitHub
+```
+
+### **📝 Code Standards**
+
+- ✅ **ES6+ JavaScript** with modern syntax
+- ✅ **Async/Await** for asynchronous operations  
+- ✅ **Error Handling** for all external API calls
+- ✅ **JSDoc Comments** for complex functions
+- ✅ **Consistent Formatting** with Prettier
+- ✅ **Descriptive Commit Messages** following conventional commits
+
+### **🎯 Areas for Contribution**
+
+- **🌐 New RSS Sources** - Add more IoT news sources
+- **🎨 UI/UX Improvements** - Enhance dashboard design
+- **📊 Advanced Analytics** - More detailed statistics
+- **🔍 Search Enhancement** - Better search algorithms
+- **📱 Mobile App** - React Native or Flutter app
+- **🔌 API Extensions** - Additional endpoints and features
+- **🧪 Testing** - Unit tests and integration tests
+- **📚 Documentation** - Improve guides and examples
+
+## 📄 **License & Legal**
+
+### **📜 MIT License**
+
+```
+MIT License
+
+Copyright (c) 2025 IoTCommunity.Space
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+### **📰 Content Attribution**
+
+- **RSS Feeds** - All article content remains property of original publishers
+- **Fair Use** - Content aggregation falls under fair use for informational purposes
+- **Attribution** - All articles include links to original sources
+- **No Redistribution** - Platform aggregates and links; does not republish content
+
+## 🆘 **Support & Community**
+
+### **📞 Getting Help**
+
+| Resource | URL | Purpose |
+|----------|-----|---------|
+| **🐛 Bug Reports** | [GitHub Issues](https://github.com/iotcommunity-space/IoT-News-Aggregator-API/issues) | Report bugs and issues |
+| **💡 Feature Requests** | [GitHub Discussions](https://github.com/iotcommunity-space/IoT-News-Aggregator-API/discussions) | Suggest new features |
+| **📚 Documentation** | This README | Comprehensive setup guide |
+| **🌐 IoT Community** | [IoTCommunity.Space](https://iotcommunity.space/) | Join our IoT community |
+
+### **🏃‍♂️ Quick Links**
+
+- **🚀 Quick Start:** [One-command setup](#-quick-start-one-command)
+- **📱 Dashboard Guide:** [Web interface usage](#-web-dashboard-guide)
+- **🔌 API Docs:** [REST API reference](#-rest-api-documentation)
+- **🐳 Docker Setup:** [Container deployment](#-docker-deployment)
+- **🔧 Configuration:** [Environment setup](#-configuration-options)
+
+## 🎯 **What's Next?**
+
+### **🚀 Immediate Use Cases**
+
+1. **📰 News Portal** - Deploy as company IoT news portal
+2. **🔌 API Integration** - Integrate IoT news into existing applications  
+3. **📊 Market Research** - Analyze IoT industry trends and topics
+4. **🏢 Enterprise Dashboard** - Internal IoT intelligence platform
+5. **📱 Mobile Backend** - Power mobile IoT news applications
+
+### **🔮 Future Roadmap**
+
+- **🤖 AI Integration** - GPT-powered article summarization
+- **📊 Advanced Analytics** - Sentiment analysis and trend prediction  
+- **🔍 Smart Search** - Semantic search with vector embeddings
+- **📱 Mobile Apps** - Native iOS and Android applications
+- **🌐 Multi-language** - Support for international IoT sources
+- **🔔 Real-time Notifications** - WebSocket-based live updates
 
 
-## 📄 License
 
-MIT License - see LICENSE file for details
+# 🌟 **Built with ❤️ by IoTCommunity.Space**
 
-## 🆘 Support
+### **[🌐 Visit IoTCommunity.Space](https://iotcommunity.space/)**
 
-### **Documentation**
+**Building the future of IoT together**
 
-- **API Documentation** - This README
-- **Code Comments** - Inline documentation
-- **Error Messages** - Descriptive error responses
+### **⭐ Star this project on GitHub to support IoT innovation!**
 
-
-### **Community**
-
-- **Issues** - GitHub Issues for bug reports
-- **Discussions** - GitHub Discussions for questions
-- **Wiki** - Additional documentation and examples
-
-**Built with ❤️ for the IoT Community**
-
-*Last Updated: July 20, 2025*
-
-<div style="text-align: center">⁂</div>
-
-[^1]: image.jpg
+[![GitHub stars](https://img.shields.io/github/stars/iotcommunity-space/IoT-News-Aggregator](https://img.shields.io/github/forks Updated: July 22, 2025 -  Version 2.0.0*
 
