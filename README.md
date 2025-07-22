@@ -14,12 +14,6 @@
 - **Easy Integration** - Clean, documented endpoints with JSON responses
 - **Auto-Installation** - One-command setup with dependency auto-install
 
-### For Enterprises
-- **Scalable Architecture** - Handle millions of articles with MongoDB
-- **Docker Deployment** - Production-ready containerization
-- **Content Management** - Edit, categorize, and manage news articles
-- **Analytics Dashboard** - Comprehensive statistics and insights
-
 ## Key Features
 
 ### Platform Features
