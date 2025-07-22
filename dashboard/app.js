@@ -8,9 +8,23 @@ const moment = require('moment');
 const app = express();
 const PORT = process.env.DASHBOARD_PORT || 4000;
 
+// Middleware to dynamically set base URLs for dashboard links
+app.use((req, res, next) => {
+  const protocol = req.protocol;           // 'http' or 'https'
+  const hostname = req.hostname;           // domain or IP without port
+  const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000; // fallback
+  const apiPort = process.env.API_PORT || 3000;
+
+  res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+  res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+  res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+  next();
+});
+
 // Middleware
 app.use(helmet({
-  contentSecurityPolicy: false, // Allow inline styles for dashboard
+  contentSecurityPolicy: false,
 }));
 app.use(compression());
 app.use(express.json());
@@ -24,11 +38,10 @@ app.set('views', path.join(__dirname, 'views'));
 // Make moment available in templates
 app.locals.moment = moment;
 
-// MongoDB connection
+// MongoDB connection with retry mechanism
 const connectToMongoDB = async () => {
   const maxRetries = 5;
   let retries = 0;
-
   while (retries < maxRetries) {
     try {
       await mongoose.connect(process.env.MONGODB_URI);
@@ -37,7 +50,6 @@ const connectToMongoDB = async () => {
     } catch (error) {
       retries++;
       console.log(`❌ Dashboard MongoDB connection attempt ${retries}/${maxRetries} failed:`, error.message);
-      
       if (retries < maxRetries) {
         console.log('⏳ Retrying MongoDB connection in 5 seconds...');
         await new Promise(resolve => setTimeout(resolve, 5000));
@@ -49,7 +61,7 @@ const connectToMongoDB = async () => {
   }
 };
 
-// Article Schema (same as API)
+// Article schema
 const ArticleSchema = new mongoose.Schema({
   id: { type: String, required: true, unique: true, index: true },
   contentHash: { type: String, required: true, index: true },
@@ -97,20 +109,19 @@ app.get('/', async (req, res) => {
     const source = req.query.source || '';
     const category = req.query.category || '';
 
-    // Build query
     const query = { isDuplicate: false };
-    
+
     if (search) {
       query.$or = [
         { title: { $regex: search, $options: 'i' } },
         { excerpt: { $regex: search, $options: 'i' } }
       ];
     }
-    
+
     if (source) {
       query['source.domain'] = source;
     }
-    
+
     if (category) {
       query.categories = { $regex: category, $options: 'i' };
     }
@@ -118,11 +129,7 @@ app.get('/', async (req, res) => {
     const skip = (page - 1) * limit;
 
     const [articles, total, sources, categories] = await Promise.all([
-      Article.find(query)
-        .sort({ publishedAt: -1 })
-        .skip(skip)
-        .limit(limit)
-        .lean(),
+      Article.find(query).sort({ publishedAt: -1 }).skip(skip).limit(limit).lean(),
       Article.countDocuments(query),
       Article.aggregate([
         { $match: { isDuplicate: false } },
@@ -154,7 +161,17 @@ app.get('/', async (req, res) => {
     });
   } catch (error) {
     console.error('Error loading dashboard:', error);
-    res.status(500).render('error', { 
+    // Set locals for error template so apiBaseUrl etc exist
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to load articles',
       title: 'Error'
     });
@@ -165,21 +182,39 @@ app.get('/', async (req, res) => {
 app.get('/article/:id', async (req, res) => {
   try {
     const article = await Article.findOne({ id: req.params.id });
-    
     if (!article) {
-      return res.status(404).render('error', { 
+      // Pass required locals in case error.ejs uses apiBaseUrl
+      const protocol = req.protocol;
+      const hostname = req.hostname;
+      const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+      const apiPort = process.env.API_PORT || 3000;
+
+      res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+      res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+      res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+      return res.status(404).render('error', {
         error: 'Article not found',
         title: 'Article Not Found'
       });
     }
 
-    res.render('article', { 
+    res.render('article', {
       article,
       title: article.title
     });
   } catch (error) {
     console.error('Error loading article:', error);
-    res.status(500).render('error', { 
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to load article',
       title: 'Error'
     });
@@ -190,21 +225,38 @@ app.get('/article/:id', async (req, res) => {
 app.get('/article/:id/edit', async (req, res) => {
   try {
     const article = await Article.findOne({ id: req.params.id });
-    
     if (!article) {
-      return res.status(404).render('error', { 
+      const protocol = req.protocol;
+      const hostname = req.hostname;
+      const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+      const apiPort = process.env.API_PORT || 3000;
+
+      res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+      res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+      res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+      return res.status(404).render('error', {
         error: 'Article not found',
         title: 'Article Not Found'
       });
     }
 
-    res.render('edit', { 
+    res.render('edit', {
       article,
       title: `Edit: ${article.title}`
     });
   } catch (error) {
     console.error('Error loading article for edit:', error);
-    res.status(500).render('error', { 
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to load article',
       title: 'Error'
     });
@@ -215,7 +267,7 @@ app.get('/article/:id/edit', async (req, res) => {
 app.post('/article/:id/edit', async (req, res) => {
   try {
     const { title, excerpt, content, author, categories, tags } = req.body;
-    
+
     const updateData = {
       title: title.trim(),
       excerpt: excerpt.trim(),
@@ -235,7 +287,16 @@ app.post('/article/:id/edit', async (req, res) => {
     res.redirect(`/article/${req.params.id}?updated=true`);
   } catch (error) {
     console.error('Error updating article:', error);
-    res.status(500).render('error', { 
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to update article',
       title: 'Update Error'
     });
@@ -249,7 +310,16 @@ app.post('/article/:id/delete', async (req, res) => {
     res.redirect('/?deleted=true');
   } catch (error) {
     console.error('Error deleting article:', error);
-    res.status(500).render('error', { 
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to delete article',
       title: 'Delete Error'
     });
@@ -268,8 +338,8 @@ app.get('/stats', async (req, res) => {
       Article.countDocuments({ isDuplicate: false }),
       Article.aggregate([
         { $match: { isDuplicate: false } },
-        { $group: { 
-          _id: '$source.domain', 
+        { $group: {
+          _id: '$source.domain',
           name: { $first: '$source.name' },
           count: { $sum: 1 },
           latestArticle: { $max: '$publishedAt' }
@@ -284,7 +354,7 @@ app.get('/stats', async (req, res) => {
         { $limit: 15 }
       ]),
       Article.aggregate([
-        { $match: { 
+        { $match: {
           isDuplicate: false,
           publishedAt: { $gte: new Date(Date.now() - 7*24*60*60*1000) }
         }},
@@ -305,7 +375,16 @@ app.get('/stats', async (req, res) => {
     });
   } catch (error) {
     console.error('Error loading statistics:', error);
-    res.status(500).render('error', { 
+    const protocol = req.protocol;
+    const hostname = req.hostname;
+    const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+    const apiPort = process.env.API_PORT || 3000;
+
+    res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+    res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+    res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+    res.status(500).render('error', {
       error: 'Failed to load statistics',
       title: 'Statistics Error'
     });
@@ -322,18 +401,38 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Error handler
+// Error handler (important: set locals here!)
 app.use((error, req, res, next) => {
   console.error('Dashboard error:', error);
-  res.status(500).render('error', { 
+
+  // Inject res.locals so error.ejs has access to those variables
+  const protocol = req.protocol;
+  const hostname = req.hostname;
+  const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+  const apiPort = process.env.API_PORT || 3000;
+
+  res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+  res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+  res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+  res.status(500).render('error', {
     error: 'Internal server error',
     title: 'Server Error'
   });
 });
 
-// 404 handler
+// 404 handler (also inject locals)
 app.use((req, res) => {
-  res.status(404).render('error', { 
+  const protocol = req.protocol;
+  const hostname = req.hostname;
+  const dashboardPort = req.socket.localPort || process.env.DASHBOARD_PORT || 4000;
+  const apiPort = process.env.API_PORT || 3000;
+
+  res.locals.dashboardBaseUrl = `${protocol}://${hostname}:${dashboardPort}`;
+  res.locals.apiBaseUrl = `${protocol}://${hostname}:${apiPort}`;
+  res.locals.apiHealthUrl = `${res.locals.apiBaseUrl}/health`;
+
+  res.status(404).render('error', {
     error: 'Page not found',
     title: '404 - Page Not Found'
   });
@@ -342,7 +441,7 @@ app.use((req, res) => {
 // Start server
 const startServer = async () => {
   await connectToMongoDB();
-  
+
   app.listen(PORT, '0.0.0.0', () => {
     console.log(`🌐 IoT News Dashboard running on port ${PORT}`);
     console.log(`📊 Dashboard URL: http://localhost:${PORT}`);
