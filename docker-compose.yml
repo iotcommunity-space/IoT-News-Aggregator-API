@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # MongoDB Database - AVX Compatible Version
   mongodb:
-    image: mongo:4.4  # Changed to 4.4 - Last version without AVX requirement
+    image: mongo:4.4  # Last version without AVX requirement
     container_name: iot_news_mongodb
     restart: unless-stopped
     environment:
@@ -30,6 +30,7 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=3000
+      - API_PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
       - RSS_FEEDS=https://iottechnews.com/feed/,https://www.iot-now.com/feed/,https://iotbusinessnews.com/feed/,https://www.iotinsider.com/category/news/feed/,https://aws.amazon.com/blogs/iot/feed/,https://connectedworld.com/feed/
       - API_VERSION=v1
@@ -53,7 +54,7 @@ services:
       retries: 3
       start_period: 60s
 
-  # IoT News Web Dashboard
+  # IoT News Web Dashboard with Authentication
   iot-news-dashboard:
     build:
       context: ./dashboard
@@ -63,7 +64,12 @@ services:
     environment:
       - NODE_ENV=production
       - DASHBOARD_PORT=4000
+      - API_PORT=3000
       - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
+      - SESSION_SECRET=${SESSION_SECRET:-change-this-super-secret-key-in-production}
+      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
+      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
+      - HTTPS=${HTTPS:-false}
     ports:
       - "4000:4000"
     depends_on:
@@ -86,8 +92,8 @@ services:
     environment:
       ME_CONFIG_MONGODB_SERVER: mongodb
       ME_CONFIG_MONGODB_PORT: 27017
-      ME_CONFIG_BASICAUTH_USERNAME: admin
-      ME_CONFIG_BASICAUTH_PASSWORD: password123
+      ME_CONFIG_BASICAUTH_USERNAME: ${MONGO_ADMIN_USER:-admin}
+      ME_CONFIG_BASICAUTH_PASSWORD: ${MONGO_ADMIN_PASS:-password123}
     ports:
       - "8081:8081"
     depends_on:

@@ -68,6 +68,82 @@
         </div>
     </nav>
 
+    <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+        <a class="navbar-brand" href="/">
+            <i class="fas fa-newspaper me-2"></i>IoT News Dashboard
+        </a>
+        
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav me-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">
+                        <i class="fas fa-home me-1"></i>Home
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/stats">
+                        <i class="fas fa-chart-bar me-1"></i>Statistics
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="<%= apiBaseUrl %>/api/v1/articles" target="_blank">
+                        <i class="fas fa-code me-1"></i>API
+                    </a>
+                </li>
+            </ul>
+            
+            <!-- User Management Dropdown -->
+            <ul class="navbar-nav">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                        <i class="fas fa-user-circle me-1"></i>
+                        <%= user.username %> 
+                        <span class="badge bg-primary ms-1"><%= user.role %></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                            <h6 class="dropdown-header">
+                                <i class="fas fa-user me-2"></i>Account Management
+                            </h6>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="/profile">
+                                <i class="fas fa-user-edit me-2"></i>Edit Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/change-password">
+                                <i class="fas fa-key me-2"></i>Change Password
+                            </a>
+                        </li>
+                        <% if (user.role === 'admin') { %>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item" href="/admin/users">
+                                <i class="fas fa-users-cog me-2"></i>Manage Users
+                            </a>
+                        </li>
+                        <% } %>
+                        <li><hr class="dropdown-divider"></li>
+                        <li>
+                            <a class="dropdown-item text-danger" href="/logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
     <!-- Hero Section with Enhanced Branding -->
     <section class="hero-section">
         <div class="container">

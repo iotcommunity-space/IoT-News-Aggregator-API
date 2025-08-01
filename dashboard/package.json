@@ -8,15 +8,18 @@
     "dev": "nodemon app.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "ejs": "^3.1.9",
-    "mongoose": "^8.16.4",
     "axios": "^1.10.0",
-    "moment": "^2.30.1",
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.7.4",
+    "connect-mongo": "^5.1.0",
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-session": "^1.18.2",
     "express-validator": "^7.0.1",
-    "multer": "^1.4.5-lts.1",
     "helmet": "^8.1.0",
-    "compression": "^1.7.4"
+    "moment": "^2.30.1",
+    "mongoose": "^8.16.4",
+    "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
     "nodemon": "^3.1.10"
