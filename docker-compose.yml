@@ -3,7 +3,7 @@ version: '3.8'
 services:
   # MongoDB Database - AVX Compatible Version
   mongodb:
-    image: mongo:4.4  # Last version without AVX requirement
+    image: mongo:4.4
     container_name: iot_news_mongodb
     restart: unless-stopped
     environment:
@@ -27,19 +27,10 @@ services:
     build: .
     container_name: iot_news_api
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - PORT=3000
-      - API_PORT=3000
-      - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
-      - RSS_FEEDS=https://iottechnews.com/feed/,https://www.iot-now.com/feed/,https://iotbusinessnews.com/feed/,https://www.iotinsider.com/category/news/feed/,https://aws.amazon.com/blogs/iot/feed/,https://connectedworld.com/feed/
-      - API_VERSION=v1
-      - MAX_ARTICLES_PER_PAGE=50
-      - DEFAULT_ARTICLES_PER_PAGE=20
-      - CACHE_TTL=300
-      - RSS_FETCH_INTERVAL=*/15 * * * *
+    env_file:
+      - .env
     ports:
-      - "3000:3000"
+      - "${PORT:-3000}:3000"
     depends_on:
       mongodb:
         condition: service_healthy
@@ -61,17 +52,10 @@ services:
       dockerfile: Dockerfile
     container_name: iot_news_dashboard
     restart: unless-stopped
-    environment:
-      - NODE_ENV=production
-      - DASHBOARD_PORT=4000
-      - API_PORT=3000
-      - MONGODB_URI=mongodb://mongodb:27017/iot_news_api
-      - SESSION_SECRET=${SESSION_SECRET:-change-this-super-secret-key-in-production}
-      - ADMIN_USERNAME=${ADMIN_USERNAME:-admin}
-      - ADMIN_PASSWORD=${ADMIN_PASSWORD:-admin123}
-      - HTTPS=${HTTPS:-false}
+    env_file:
+      - .env
     ports:
-      - "4000:4000"
+      - "${DASHBOARD_PORT:-4000}:4000"
     depends_on:
       mongodb:
         condition: service_healthy
@@ -86,7 +70,7 @@ services:
 
   # MongoDB Admin Interface (Optional)
   mongo-express:
-    image: mongo-express:0.54  # Compatible version
+    image: mongo-express:0.54
     container_name: iot_news_mongo_express
     restart: unless-stopped
     environment:
